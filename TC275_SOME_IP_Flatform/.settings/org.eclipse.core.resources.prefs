@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//0_Src/0_AppSw/Tricore/Ethernet/apps/Echo_Test/udp_echo.c=UTF-8
+encoding//0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/Server_impl/some_service.c=UTF-8
+encoding//0_Src/0_AppSw/Tricore/System/Systems/SysCFG_Schedule.c=UTF-8
+encoding//0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c=UTF-8
