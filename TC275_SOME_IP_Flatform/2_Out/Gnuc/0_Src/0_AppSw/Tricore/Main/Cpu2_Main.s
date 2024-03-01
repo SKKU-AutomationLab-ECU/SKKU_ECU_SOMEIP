@@ -4551,7 +4551,7 @@ delay2_ms:
 	.uleb128 0x1c
 	.string	"portLED"
 	.byte	0x6
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x26c5
 	.sleb128 -268184832
 	.uleb128 0x1d

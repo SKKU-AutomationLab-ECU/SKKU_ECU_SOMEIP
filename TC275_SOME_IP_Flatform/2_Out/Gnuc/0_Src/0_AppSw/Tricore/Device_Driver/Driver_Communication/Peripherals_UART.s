@@ -10231,7 +10231,7 @@ pUART_SysLog:
 	.uleb128 0x37
 	.string	"portLED"
 	.byte	0x10
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x69f8
 	.sleb128 -268184832
 	.uleb128 0x1a

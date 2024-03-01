@@ -155,11 +155,14 @@ core0_main:
 #NO_APP
 .LBE36:
 .LBE35:
+	.loc 1 86 0
+	call	someip_service_init
+.LVL13:
 	.loc 1 87 0
 	movh.a	%a4, hi:.LC6
 	lea	%a4, [%a4] lo:.LC6
 	call	printf_SysLog
-.LVL13:
+.LVL14:
 	.loc 1 98 0
 #APP
 	# 98 "0_Src/0_AppSw/Tricore/Main/Cpu0_Main.c" 1
@@ -168,11 +171,11 @@ core0_main:
 	.loc 1 103 0
 #NO_APP
 	call	initTime
-.LVL14:
+.LVL15:
 	.loc 1 105 0
 	movh.a	%a15, hi:core_sync
 	call	SetMCU
-.LVL15:
+.LVL16:
 	st.w	[%a15] lo:core_sync, %d2
 	lea	%a15, [%a15] lo:core_sync
 	.loc 1 107 0
@@ -194,7 +197,7 @@ core0_main:
 .L3:
 	.loc 1 113 0 discriminator 1
 	call	Core0_free
-.LVL16:
+.LVL17:
 .LBB39:
 .LBB40:
 	.loc 3 1369 0 discriminator 1
@@ -207,7 +210,7 @@ core0_main:
 .LBE39:
 	.loc 1 113 0 discriminator 1
 	call	Core0_free
-.LVL17:
+.LVL18:
 .LBB42:
 .LBB41:
 	.loc 3 1369 0 discriminator 1
@@ -227,17 +230,17 @@ core0_main:
 delay_tic:
 .LFB537:
 	.loc 1 121 0
-.LVL18:
+.LVL19:
 	.loc 1 121 0
 	mov.a	%a2, %d4
 	add.a	%a2, -1
 	.loc 1 123 0
 	jz	%d4, .L19
-.LVL19:
+.LVL20:
 .L18:
 	.loc 1 121 0
 	lea	%a15, 60
-.LVL20:
+.LVL21:
 .L13:
 .LBB43:
 .LBB44:
@@ -253,7 +256,7 @@ delay_tic:
 	.loc 1 123 0 discriminator 2
 	loop	%a2, .L18
 	ret
-.LVL21:
+.LVL22:
 .L19:
 	ret
 .LFE537:
@@ -264,7 +267,7 @@ delay_tic:
 delay_ms:
 .LFB538:
 	.loc 1 130 0
-.LVL22:
+.LVL23:
 	.loc 1 130 0
 	mov	%d11, %d4
 	.loc 1 134 0
@@ -274,26 +277,26 @@ delay_ms:
 	mov	%d9, 1000
 	.loc 1 134 0
 	jz	%d4, .L31
-.LVL23:
+.LVL24:
 .L30:
 	.loc 1 130 0 discriminator 1
 	mov	%d10, 4000
-.LVL24:
+.LVL25:
 .L25:
 	.loc 1 138 0
 	call	IO_getSTM0Tic
-.LVL25:
-	mov	%d8, %d2
 .LVL26:
+	mov	%d8, %d2
+.LVL27:
 	.loc 1 139 0
 	jge.u	%d15, %d9, .L23
-.LVL27:
+.LVL28:
 .L27:
 	.loc 1 141 0
 	call	IO_getSTM0Tic
-.LVL28:
-	sub	%d15, %d2, %d8
 .LVL29:
+	sub	%d15, %d2, %d8
+.LVL30:
 .LBB45:
 .LBB46:
 	.loc 3 1369 0
@@ -307,17 +310,17 @@ delay_ms:
 	.loc 1 139 0
 	jlt.u	%d15, %d9, .L27
 .L23:
-.LVL30:
-	add	%d10, -1
 .LVL31:
+	add	%d10, -1
+.LVL32:
 	.loc 1 136 0 discriminator 2
 	jnz	%d10, .L25
 	.loc 1 134 0 discriminator 2
 	add	%d12, 1
-.LVL32:
+.LVL33:
 	jne	%d12, %d11, .L30
 	ret
-.LVL33:
+.LVL34:
 .L31:
 	ret
 .LFE538:
@@ -401,12 +404,13 @@ g_AppCpu0:
 	.file 22 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 	.file 23 "./0_Src/4_McHal/Tricore/Scu/Std/IfxScuWdt.h"
 	.file 24 "./0_Src/0_AppSw/Tricore/System/Systems/SysCFG_Log.h"
-	.file 25 "./0_Src/1_SrvSw/SysSe/Bsp/Bsp.h"
-	.file 26 "./0_Src/0_AppSw/Tricore/Application/Application.h"
-	.file 27 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_System/SysCFG_Cores.h"
+	.file 25 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/Server_impl/some_service.h"
+	.file 26 "./0_Src/1_SrvSw/SysSe/Bsp/Bsp.h"
+	.file 27 "./0_Src/0_AppSw/Tricore/Application/Application.h"
+	.file 28 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_System/SysCFG_Cores.h"
 .section .debug_info,"",@progbits
 .Ldebug_info0:
-	.uaword	0xe28d
+	.uaword	0xe2b0
 	.uahalf	0x3
 	.uaword	.Ldebug_abbrev0
 	.byte	0x4
@@ -19173,7 +19177,7 @@ g_AppCpu0:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xdfe0
+	.uaword	0xdfe9
 	.uleb128 0x2a
 	.string	"ethAddr"
 	.byte	0x1
@@ -19248,22 +19252,22 @@ g_AppCpu0:
 	.byte	0x72
 	.uleb128 0x32
 	.uaword	.LVL0
-	.uaword	0xe13c
+	.uaword	0xe145
 	.uleb128 0x32
 	.uaword	.LVL1
-	.uaword	0xe168
+	.uaword	0xe171
 	.uleb128 0x32
 	.uaword	.LVL2
-	.uaword	0xe196
+	.uaword	0xe19f
 	.uleb128 0x32
 	.uaword	.LVL3
-	.uaword	0xe1c5
+	.uaword	0xe1ce
 	.uleb128 0x32
 	.uaword	.LVL4
-	.uaword	0xe1f6
+	.uaword	0xe1ff
 	.uleb128 0x33
 	.uaword	.LVL5
-	.uaword	0xe20a
+	.uaword	0xe213
 	.uaword	0xdf28
 	.uleb128 0x34
 	.byte	0x1
@@ -19274,7 +19278,7 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x33
 	.uaword	.LVL6
-	.uaword	0xe20a
+	.uaword	0xe213
 	.uaword	0xdf3f
 	.uleb128 0x34
 	.byte	0x1
@@ -19285,7 +19289,7 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x33
 	.uaword	.LVL7
-	.uaword	0xe20a
+	.uaword	0xe213
 	.uaword	0xdf56
 	.uleb128 0x34
 	.byte	0x1
@@ -19296,7 +19300,7 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x33
 	.uaword	.LVL8
-	.uaword	0xe20a
+	.uaword	0xe213
 	.uaword	0xdf6d
 	.uleb128 0x34
 	.byte	0x1
@@ -19307,7 +19311,7 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x33
 	.uaword	.LVL9
-	.uaword	0xe20a
+	.uaword	0xe213
 	.uaword	0xdf84
 	.uleb128 0x34
 	.byte	0x1
@@ -19318,7 +19322,7 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x33
 	.uaword	.LVL10
-	.uaword	0xe20a
+	.uaword	0xe213
 	.uaword	0xdf9b
 	.uleb128 0x34
 	.byte	0x1
@@ -19329,11 +19333,14 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x32
 	.uaword	.LVL12
-	.uaword	0xe229
-	.uleb128 0x33
+	.uaword	0xe232
+	.uleb128 0x32
 	.uaword	.LVL13
-	.uaword	0xe20a
-	.uaword	0xdfbb
+	.uaword	0xe250
+	.uleb128 0x33
+	.uaword	.LVL14
+	.uaword	0xe213
+	.uaword	0xdfc4
 	.uleb128 0x34
 	.byte	0x1
 	.byte	0x64
@@ -19342,17 +19349,17 @@ g_AppCpu0:
 	.uaword	.LC6
 	.byte	0
 	.uleb128 0x32
-	.uaword	.LVL14
-	.uaword	0xe247
-	.uleb128 0x32
 	.uaword	.LVL15
-	.uaword	0xe256
+	.uaword	0xe26a
 	.uleb128 0x32
 	.uaword	.LVL16
-	.uaword	0xe267
+	.uaword	0xe279
 	.uleb128 0x32
 	.uaword	.LVL17
-	.uaword	0xe267
+	.uaword	0xe28a
+	.uleb128 0x32
+	.uaword	.LVL18
+	.uaword	0xe28a
 	.byte	0
 	.uleb128 0x35
 	.byte	0x1
@@ -19365,7 +19372,7 @@ g_AppCpu0:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xe039
+	.uaword	0xe042
 	.uleb128 0x36
 	.string	"tic"
 	.byte	0x1
@@ -19403,7 +19410,7 @@ g_AppCpu0:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xe0d1
+	.uaword	0xe0da
 	.uleb128 0x38
 	.string	"tic_ms"
 	.byte	0x1
@@ -19441,17 +19448,17 @@ g_AppCpu0:
 	.byte	0x1
 	.byte	0x8f
 	.uleb128 0x32
-	.uaword	.LVL25
-	.uaword	0xe278
+	.uaword	.LVL26
+	.uaword	0xe29b
 	.uleb128 0x32
-	.uaword	.LVL28
-	.uaword	0xe278
+	.uaword	.LVL29
+	.uaword	0xe29b
 	.byte	0
 	.uleb128 0x3a
 	.string	"portLED"
 	.byte	0x16
-	.byte	0x2a
-	.uaword	0xe0e5
+	.byte	0x2c
+	.uaword	0xe0ee
 	.sleb128 -268184832
 	.uleb128 0x1c
 	.uaword	0x275f
@@ -19502,7 +19509,7 @@ g_AppCpu0:
 	.uahalf	0x136
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe196
+	.uaword	0xe19f
 	.uleb128 0x23
 	.uaword	0x25d
 	.byte	0
@@ -19521,7 +19528,7 @@ g_AppCpu0:
 	.uahalf	0x140
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe1f6
+	.uaword	0xe1ff
 	.uleb128 0x23
 	.uaword	0x25d
 	.byte	0
@@ -19539,7 +19546,7 @@ g_AppCpu0:
 	.byte	0x13
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe229
+	.uaword	0xe232
 	.uleb128 0x23
 	.uaword	0x2894
 	.uleb128 0x41
@@ -19551,21 +19558,28 @@ g_AppCpu0:
 	.byte	0x6d
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe247
+	.uaword	0xe250
 	.uleb128 0x23
 	.uaword	0xdcb5
 	.byte	0
 	.uleb128 0x3f
 	.byte	0x1
-	.string	"initTime"
+	.string	"someip_service_init"
 	.byte	0x19
+	.byte	0x14
+	.byte	0x1
+	.byte	0x1
+	.uleb128 0x3f
+	.byte	0x1
+	.string	"initTime"
+	.byte	0x1a
 	.byte	0xa2
 	.byte	0x1
 	.byte	0x1
 	.uleb128 0x42
 	.byte	0x1
 	.string	"SetMCU"
-	.byte	0x1a
+	.byte	0x1b
 	.byte	0x22
 	.byte	0x1
 	.uaword	0x20f
@@ -19573,14 +19587,14 @@ g_AppCpu0:
 	.uleb128 0x3f
 	.byte	0x1
 	.string	"Core0_free"
-	.byte	0x1a
+	.byte	0x1b
 	.byte	0x24
 	.byte	0x1
 	.byte	0x1
 	.uleb128 0x42
 	.byte	0x1
 	.string	"IO_getSTM0Tic"
-	.byte	0x1b
+	.byte	0x1c
 	.byte	0x49
 	.byte	0x1
 	.uaword	0x3a1
@@ -20514,12 +20528,12 @@ g_AppCpu0:
 .section .debug_loc,"",@progbits
 .Ldebug_loc0:
 .LLST0:
-	.uaword	.LVL18-.Ltext0
 	.uaword	.LVL19-.Ltext0
+	.uaword	.LVL20-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
-	.uaword	.LVL21-.Ltext0
+	.uaword	.LVL22-.Ltext0
 	.uaword	.LFE537-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
@@ -20527,39 +20541,39 @@ g_AppCpu0:
 	.uaword	0
 	.uaword	0
 .LLST1:
-	.uaword	.LVL19-.Ltext0
 	.uaword	.LVL20-.Ltext0
+	.uaword	.LVL21-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
 	.uaword	0
 	.uaword	0
 .LLST2:
-	.uaword	.LVL22-.Ltext0
 	.uaword	.LVL23-.Ltext0
+	.uaword	.LVL24-.Ltext0
 	.uahalf	0x1
 	.byte	0x54
-	.uaword	.LVL23-.Ltext0
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL24-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uahalf	0x1
 	.byte	0x5b
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uaword	.LFE538-.Ltext0
 	.uahalf	0x1
 	.byte	0x54
 	.uaword	0
 	.uaword	0
 .LLST3:
-	.uaword	.LVL22-.Ltext0
 	.uaword	.LVL23-.Ltext0
+	.uaword	.LVL24-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
-	.uaword	.LVL23-.Ltext0
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL24-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uahalf	0x1
 	.byte	0x5c
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uaword	.LFE538-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
@@ -20567,13 +20581,13 @@ g_AppCpu0:
 	.uaword	0
 	.uaword	0
 .LLST4:
-	.uaword	.LVL23-.Ltext0
 	.uaword	.LVL24-.Ltext0
+	.uaword	.LVL25-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
-	.uaword	.LVL24-.Ltext0
-	.uaword	.LVL30-.Ltext0
+	.uaword	.LVL25-.Ltext0
+	.uaword	.LVL31-.Ltext0
 	.uahalf	0x7
 	.byte	0xa
 	.uahalf	0xfa0
@@ -20581,8 +20595,8 @@ g_AppCpu0:
 	.sleb128 0
 	.byte	0x1c
 	.byte	0x9f
-	.uaword	.LVL30-.Ltext0
 	.uaword	.LVL31-.Ltext0
+	.uaword	.LVL32-.Ltext0
 	.uahalf	0x7
 	.byte	0xa
 	.uahalf	0xfa1
@@ -20590,8 +20604,8 @@ g_AppCpu0:
 	.sleb128 0
 	.byte	0x1c
 	.byte	0x9f
-	.uaword	.LVL31-.Ltext0
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL32-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uahalf	0x7
 	.byte	0xa
 	.uahalf	0xfa0
@@ -20602,36 +20616,36 @@ g_AppCpu0:
 	.uaword	0
 	.uaword	0
 .LLST5:
-	.uaword	.LVL26-.Ltext0
 	.uaword	.LVL27-.Ltext0
+	.uaword	.LVL28-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
-	.uaword	.LVL27-.Ltext0
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL28-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uahalf	0x1
 	.byte	0x58
 	.uaword	0
 	.uaword	0
 .LLST6:
-	.uaword	.LVL22-.Ltext0
 	.uaword	.LVL23-.Ltext0
+	.uaword	.LVL24-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
-	.uaword	.LVL23-.Ltext0
-	.uaword	.LVL27-.Ltext0
+	.uaword	.LVL24-.Ltext0
+	.uaword	.LVL28-.Ltext0
 	.uahalf	0x1
 	.byte	0x5f
-	.uaword	.LVL27-.Ltext0
-	.uaword	.LVL29-.Ltext0
+	.uaword	.LVL28-.Ltext0
+	.uaword	.LVL30-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
-	.uaword	.LVL29-.Ltext0
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL30-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uahalf	0x1
 	.byte	0x5f
-	.uaword	.LVL33-.Ltext0
+	.uaword	.LVL34-.Ltext0
 	.uaword	.LFE538-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
@@ -20727,6 +20741,7 @@ g_AppCpu0:
 	.extern	Core0_free,STT_FUNC,0
 	.extern	SetMCU,STT_FUNC,0
 	.extern	initTime,STT_FUNC,0
+	.extern	someip_service_init,STT_FUNC,0
 	.extern	Ifx_Lwip_init,STT_FUNC,0
 	.extern	printf_SysLog,STT_FUNC,0
 	.extern	IO_Set_SysLog,STT_FUNC,0

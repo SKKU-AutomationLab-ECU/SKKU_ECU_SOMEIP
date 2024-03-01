@@ -5186,7 +5186,7 @@ Sort_Frame:
 	.uleb128 0x22
 	.string	"portLED"
 	.byte	0x4
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x2a24
 	.sleb128 -268184832
 	.uleb128 0x23
@@ -5308,7 +5308,7 @@ Sort_Frame:
 	.byte	0x1
 	.string	"printf_ETH"
 	.byte	0x4
-	.byte	0x4f
+	.byte	0x51
 	.byte	0x1
 	.byte	0x1
 	.uaword	0x2b82

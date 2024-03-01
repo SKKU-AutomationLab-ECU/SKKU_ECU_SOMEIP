@@ -11901,7 +11901,7 @@ IO_getSTM2Tic:
 	.uleb128 0x2e
 	.string	"portLED"
 	.byte	0xb
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x66d0
 	.sleb128 -268184832
 	.uleb128 0x3c

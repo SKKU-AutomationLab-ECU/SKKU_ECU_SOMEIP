@@ -4533,7 +4533,7 @@ ServiceHandler_STM21:
 	.uleb128 0x17
 	.string	"portLED"
 	.byte	0x5
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x26b7
 	.sleb128 -268184832
 	.uleb128 0x18

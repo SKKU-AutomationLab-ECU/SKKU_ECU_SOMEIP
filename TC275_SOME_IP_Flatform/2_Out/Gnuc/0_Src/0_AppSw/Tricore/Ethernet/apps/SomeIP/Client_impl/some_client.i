@@ -20965,7 +20965,7 @@ static inline __attribute__ ((always_inline)) IfxEth *IfxEth_get(void)
 # 14 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/Client_impl/some_client.c" 2
 
 # 1 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 1
-# 25 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 27 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 # 1 "./0_Src/4_McHal/Tricore/Eth/Phy_Pef7071/IfxEth_Phy_Pef7071.h" 1
 # 48 "./0_Src/4_McHal/Tricore/Eth/Phy_Pef7071/IfxEth_Phy_Pef7071.h"
 extern uint32 IfxEth_Phy_Pef7071_init(void);
@@ -20992,11 +20992,11 @@ extern void IfxEth_Phy_Pef7071_write_mdio_reg(uint32 layeraddr, uint32 regaddr, 
 
 
 extern uint32 IfxEth_Phy_Pef7071_iPhyInitDone;
-# 26 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 2
-# 42 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 28 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 2
+# 44 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 static Ifx_P * const portLED = (Ifx_P *)&((*(Ifx_P *)0xF003D300u));
 extern int tem;
-# 55 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 57 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 typedef struct
 {
     struct
@@ -21033,7 +21033,7 @@ void Set_desIPaddr(ip_addr_t *dest_ip, uint8 IPaddr_1, uint8 IPaddr_2, uint8 IPa
 
 void Converting_UDP_TxPayload(struct pbuf *p);
 void UDP_Send_to(ip_addr_t *dest_ip, u16_t dest_port, uint8 *data);
-# 254 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 256 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 typedef enum _eth_checksum{
     correct_checksum = 0,
     wrong_checksum
@@ -21061,7 +21061,7 @@ typedef struct _ethFrameStr{
 
     uint8 dstMAC[6];
     uint8 srcMAC[6];
-# 291 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 293 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
     uint8 ethType[2];
 
 
@@ -21082,7 +21082,7 @@ typedef struct _ethFrameStr{
 
     uint8 srcIP[4];
     uint8 dstIP[4];
-# 325 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 327 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
     uint8 srcPN[2];
     uint8 dstPN[2];
     uint8 SeqNum[4];
@@ -21105,7 +21105,7 @@ typedef struct _ethFrameStr{
     uint8 TCS[2];
 
     uint8 UrgentPtr[2];
-# 425 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 427 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
     uint8 payload[1500 - 20 - 20];
 
 } ethFrameStr;

@@ -5,9 +5,9 @@
 .LC0:
 	.string	"UDP/IP Bind is OK!\r\n"
 .LC1:
-	.string	"ARP add static entry fail!! \r\n"
+	.string	"ARP add *Jetson Orin* static entry fail!! \r\n"
 .LC2:
-	.string	"ARP add static entry success!! \r\n"
+	.string	"ARP add *Jetson Orin* static entry success!! \r\n"
 .section .text,"ax",@progbits
 	.align 1
 	.global	someip_service_init
@@ -39,55 +39,54 @@ someip_service_init:
 	call	udp_remove
 .LVL2:
 .L4:
-	.loc 1 53 0
-	movh	%d15, 2561
+	.loc 1 55 0
+	movh	%d15, 2049
 	addi	%d15, %d15, -22336
-	.loc 1 58 0
+	.loc 1 59 0
 	lea	%a4, [%SP] 4
 	lea	%a5, [%SP] 10
-	.loc 1 53 0
+	.loc 1 55 0
 	st.w	[%SP] 4, %d15
-.LVL3:
-	.loc 1 56 0
-	mov	%d15, 88
+	.loc 1 57 0
+	mov	%d15, 72
 	st.b	[%SP] 10, %d15
-	mov	%d15, -122
+	mov	%d15, -80
 	st.b	[%SP] 11, %d15
-	mov	%d15, -108
+	mov	%d15, 45
 	st.b	[%SP] 12, %d15
-	mov	%d15, -5
+	mov	%d15, -125
 	st.b	[%SP] 13, %d15
-	mov	%d15, -83
+	mov	%d15, -105
 	st.b	[%SP] 14, %d15
-	mov	%d15, 58
+	mov	%d15, -86
 	st.b	[%SP] 15, %d15
-	.loc 1 58 0
-	call	etharp_add_static_entry
-.LVL4:
 	.loc 1 59 0
+	call	etharp_add_static_entry
+.LVL3:
+	.loc 1 60 0
 	jeq	%d2, -4, .L12
-	.loc 1 65 0
+	.loc 1 66 0
 	movh.a	%a4, hi:.LC2
 	lea	%a4, [%a4] lo:.LC2
 	call	printf_SysLog
-.LVL5:
+.LVL4:
 .L1:
 	ret
-.LVL6:
+.LVL5:
 .L11:
 	.loc 1 41 0
 	movh.a	%a4, hi:.LC0
 	lea	%a4, [%a4] lo:.LC0
 	call	printf_SysLog
-.LVL7:
+.LVL6:
 	j	.L4
-.LVL8:
+.LVL7:
 .L12:
-	.loc 1 61 0
+	.loc 1 62 0
 	movh.a	%a4, hi:.LC1
 	lea	%a4, [%a4] lo:.LC1
 	j	printf_SysLog
-.LVL9:
+.LVL8:
 .LBE2:
 .LFE439:
 	.size	someip_service_init, .-someip_service_init
@@ -147,7 +146,7 @@ some_server_pcb:
 	.file 19 "./0_Src/0_AppSw/Tricore/System/Systems/SysCFG_Log.h"
 .section .debug_info,"",@progbits
 .Ldebug_info0:
-	.uaword	0xde92
+	.uaword	0xde76
 	.uahalf	0x3
 	.uaword	.Ldebug_abbrev0
 	.byte	0x4
@@ -18780,7 +18779,7 @@ some_server_pcb:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xdd7d
+	.uaword	0xdd61
 	.uleb128 0x27
 	.string	"err"
 	.byte	0x1
@@ -18790,33 +18789,27 @@ some_server_pcb:
 	.uleb128 0x28
 	.uaword	.LBB2
 	.uaword	.LBE2
-	.uaword	0xdd73
+	.uaword	0xdd57
 	.uleb128 0x29
 	.string	"destination_ip"
 	.byte	0x1
-	.byte	0x34
+	.byte	0x36
 	.uaword	0x28b4
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -12
-	.uleb128 0x27
-	.string	"destination_port"
-	.byte	0x1
-	.byte	0x36
-	.uaword	0x35b
-	.uaword	.LLST1
 	.uleb128 0x29
 	.string	"destination_Eth"
 	.byte	0x1
-	.byte	0x37
+	.byte	0x38
 	.uaword	0xdbb6
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -6
 	.uleb128 0x2a
 	.uaword	.LVL1
-	.uaword	0xddeb
-	.uaword	0xdd0d
+	.uaword	0xddcf
+	.uaword	0xdcf1
 	.uleb128 0x2b
 	.byte	0x1
 	.byte	0x54
@@ -18826,11 +18819,11 @@ some_server_pcb:
 	.byte	0
 	.uleb128 0x2c
 	.uaword	.LVL2
-	.uaword	0xde12
+	.uaword	0xddf6
 	.uleb128 0x2a
-	.uaword	.LVL4
-	.uaword	0xde2d
-	.uaword	0xdd30
+	.uaword	.LVL3
+	.uaword	0xde11
+	.uaword	0xdd14
 	.uleb128 0x2b
 	.byte	0x1
 	.byte	0x65
@@ -18845,9 +18838,9 @@ some_server_pcb:
 	.sleb128 -12
 	.byte	0
 	.uleb128 0x2a
-	.uaword	.LVL5
-	.uaword	0xde64
-	.uaword	0xdd47
+	.uaword	.LVL4
+	.uaword	0xde48
+	.uaword	0xdd2b
 	.uleb128 0x2b
 	.byte	0x1
 	.byte	0x64
@@ -18856,9 +18849,9 @@ some_server_pcb:
 	.uaword	.LC2
 	.byte	0
 	.uleb128 0x2a
-	.uaword	.LVL7
-	.uaword	0xde64
-	.uaword	0xdd5e
+	.uaword	.LVL6
+	.uaword	0xde48
+	.uaword	0xdd42
 	.uleb128 0x2b
 	.byte	0x1
 	.byte	0x64
@@ -18867,9 +18860,9 @@ some_server_pcb:
 	.uaword	.LC0
 	.byte	0
 	.uleb128 0x2d
-	.uaword	.LVL9
+	.uaword	.LVL8
 	.byte	0x1
-	.uaword	0xde64
+	.uaword	0xde48
 	.uleb128 0x2b
 	.byte	0x1
 	.byte	0x64
@@ -18880,13 +18873,13 @@ some_server_pcb:
 	.byte	0
 	.uleb128 0x2c
 	.uaword	.LVL0
-	.uaword	0xde83
+	.uaword	0xde67
 	.byte	0
 	.uleb128 0x2e
 	.string	"portLED"
 	.byte	0x12
-	.byte	0x2a
-	.uaword	0xdd91
+	.byte	0x2c
+	.uaword	0xdd75
 	.sleb128 -268184832
 	.uleb128 0x1b
 	.uaword	0x26da
@@ -18928,7 +18921,7 @@ some_server_pcb:
 	.byte	0x1
 	.uaword	0x2815
 	.byte	0x1
-	.uaword	0xde12
+	.uaword	0xddf6
 	.uleb128 0x1a
 	.uaword	0x2aad
 	.uleb128 0x1a
@@ -18943,7 +18936,7 @@ some_server_pcb:
 	.byte	0x7c
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xde2d
+	.uaword	0xde11
 	.uleb128 0x1a
 	.uaword	0x2aad
 	.byte	0
@@ -18955,11 +18948,11 @@ some_server_pcb:
 	.byte	0x1
 	.uaword	0x2815
 	.byte	0x1
-	.uaword	0xde5e
+	.uaword	0xde42
 	.uleb128 0x1a
 	.uaword	0x2a4e
 	.uleb128 0x1a
-	.uaword	0xde5e
+	.uaword	0xde42
 	.byte	0
 	.uleb128 0x16
 	.byte	0x4
@@ -18971,7 +18964,7 @@ some_server_pcb:
 	.byte	0x13
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xde83
+	.uaword	0xde67
 	.uleb128 0x1a
 	.uaword	0x280f
 	.uleb128 0x33
@@ -19695,33 +19688,18 @@ some_server_pcb:
 	.uaword	.LVL2-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
-	.uaword	.LVL4-.Ltext0
-	.uaword	.LVL5-1-.Ltext0
-	.uahalf	0x1
-	.byte	0x52
-	.uaword	.LVL6-.Ltext0
-	.uaword	.LVL7-1-.Ltext0
-	.uahalf	0x1
-	.byte	0x52
-	.uaword	.LVL8-.Ltext0
-	.uaword	.LVL9-1-.Ltext0
-	.uahalf	0x1
-	.byte	0x52
-	.uaword	0
-	.uaword	0
-.LLST1:
 	.uaword	.LVL3-.Ltext0
+	.uaword	.LVL4-1-.Ltext0
+	.uahalf	0x1
+	.byte	0x52
 	.uaword	.LVL5-.Ltext0
-	.uahalf	0x4
-	.byte	0xa
-	.uahalf	0x771a
-	.byte	0x9f
-	.uaword	.LVL8-.Ltext0
-	.uaword	.LFE439-.Ltext0
-	.uahalf	0x4
-	.byte	0xa
-	.uahalf	0x771a
-	.byte	0x9f
+	.uaword	.LVL6-1-.Ltext0
+	.uahalf	0x1
+	.byte	0x52
+	.uaword	.LVL7-.Ltext0
+	.uaword	.LVL8-1-.Ltext0
+	.uahalf	0x1
+	.byte	0x52
 	.uaword	0
 	.uaword	0
 .section .debug_aranges,"",@progbits

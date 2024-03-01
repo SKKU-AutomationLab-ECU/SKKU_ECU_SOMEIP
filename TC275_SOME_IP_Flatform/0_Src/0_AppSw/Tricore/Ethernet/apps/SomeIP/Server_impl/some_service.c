@@ -48,24 +48,35 @@ void someip_service_init(void)
             udp_remove(some_server_pcb);
         }
 
-        //TODO:static ARP Table 작성하는 코드 따로 구현 필요
+	    //TODO:static ARP Table 작성하는 코드 따로 구현 필요
+
+        /* Jetson Orin */
         ip_addr_t destination_ip;
-        IP4_ADDR(&destination_ip, 192, 168, 0, 10); // Change to your destination IP address
-        u16_t destination_port = 30490U;
-        eth_addr_t destination_Eth; 
-        MAC_ADDR(&destination_Eth, 0x58, 0x86, 0x94, 0xFB, 0xAD, 0x3A); // Change to your destination MAC address
+        IP4_ADDR(&destination_ip, 192, 168, 0, 8); // Change to your destination IP address
+        eth_addr_t destination_Eth;
+        MAC_ADDR(&destination_Eth, 0x48, 0xb0, 0x2d, 0x83, 0x97, 0xaa); // Change to your destination MAC address
 
         err = etharp_add_static_entry(&destination_ip, &destination_Eth);
         if(err == ERR_RTE)
         {
-	        printf_SysLog("ARP add static entry fail!! \r\n");
+            printf_SysLog("ARP add *Jetson Orin* static entry fail!! \r\n");
         }
         else
         {
-	        printf_SysLog("ARP add static entry success!! \r\n");
+            printf_SysLog("ARP add *Jetson Orin* static entry success!! \r\n");
         }
-
-        //TxSOMEIP_Test(upcb);
+        /* PC */
+    //	IP4_ADDR(&destination_ip, 192, 168, 0, 2); // Change to your destination IP address
+    //	MAC_ADDR(&destination_Eth, 0x58, 0x11, 0x22, 0xB0, 0x48, 0x70); // Change to your destination MAC address
+    //	err = etharp_add_static_entry(&destination_ip, &destination_Eth);
+    //	if(err == ERR_RTE)
+    //	{
+    //		printf_SysLog("ARP add *PC* static entry fail!! \r\n");
+    //	}
+    //	else
+    //	{
+    //		printf_SysLog("ARP add *PC* static entry success!! \r\n");
+    //	}
     }
 }
 

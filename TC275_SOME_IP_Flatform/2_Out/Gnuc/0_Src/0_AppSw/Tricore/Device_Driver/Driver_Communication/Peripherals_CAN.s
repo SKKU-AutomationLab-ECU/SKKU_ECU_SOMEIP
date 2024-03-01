@@ -16166,7 +16166,7 @@ pCAN:
 	.uleb128 0x3e
 	.string	"portLED"
 	.byte	0xf
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x8fdf
 	.sleb128 -268184832
 	.uleb128 0x20

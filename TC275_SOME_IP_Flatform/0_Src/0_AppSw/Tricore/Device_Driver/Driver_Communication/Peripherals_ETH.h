@@ -12,6 +12,8 @@
  *      Revised: JH_Kim (2024. 1. 17.)
 =======
  *      Revised: SJ_Lim (2024. 2. 4.)
+=======
+ *      Revised: SB_Oh (2024. 3. 1.)
  */
 
 #ifndef PERIPHERALS_ETH_H_

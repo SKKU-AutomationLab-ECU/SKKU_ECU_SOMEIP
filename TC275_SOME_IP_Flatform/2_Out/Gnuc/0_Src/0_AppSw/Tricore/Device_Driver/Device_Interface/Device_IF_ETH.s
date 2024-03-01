@@ -4369,7 +4369,7 @@ SRC_mMAC:
 	.uleb128 0x19
 	.string	"portLED"
 	.byte	0x4
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x25ef
 	.sleb128 -268184832
 	.uleb128 0x1a
@@ -4424,7 +4424,7 @@ SRC_mMAC:
 	.byte	0x1
 	.string	"setPort_ETH"
 	.byte	0x4
-	.byte	0x4b
+	.byte	0x4d
 	.byte	0x1
 	.byte	0x1
 	.byte	0

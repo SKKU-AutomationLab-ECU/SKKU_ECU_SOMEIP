@@ -19906,7 +19906,7 @@ g_Lwip:
 	.uleb128 0x4c
 	.string	"portLED"
 	.byte	0x17
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0xe34d
 	.sleb128 -268184832
 	.uleb128 0x5

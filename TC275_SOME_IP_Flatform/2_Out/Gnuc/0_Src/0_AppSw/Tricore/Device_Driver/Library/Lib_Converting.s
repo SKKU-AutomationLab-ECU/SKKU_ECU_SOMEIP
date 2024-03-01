@@ -4739,7 +4739,7 @@ convert_str:
 	.uleb128 0x28
 	.string	"portLED"
 	.byte	0x5
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x27b7
 	.sleb128 -268184832
 	.uleb128 0x5

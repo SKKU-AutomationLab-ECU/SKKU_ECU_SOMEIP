@@ -92,15 +92,17 @@ Core0_free:
 	.loc 1 77 0
 	movh.a	%a15, hi:Test_message_count
 	ld.bu	%d15, [%a15] lo:Test_message_count
-	jnz	%d15, .L11
-	.loc 1 80 0
-	mov	%d15, 1
+	mov	%d2, 1000
+	div	%e2, %d15, %d2
+	jnz	%d3, .L11
 	.loc 1 79 0
 	call	TxSOMEIP_Test
 .LVL0:
-	.loc 1 80 0
-	st.b	[%a15] lo:Test_message_count, %d15
+	ld.bu	%d15, [%a15] lo:Test_message_count
 .L11:
+	.loc 1 81 0
+	add	%d15, 1
+	st.b	[%a15] lo:Test_message_count, %d15
 	.loc 1 92 0
 	call	Ifx_Lwip_pollTimerFlags
 .LVL1:
@@ -19035,7 +19037,7 @@ bLEDtoggle:
 	.uleb128 0x2d
 	.string	"portLED"
 	.byte	0x16
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0xdd7b
 	.sleb128 -268184832
 	.uleb128 0x1d

@@ -12508,7 +12508,7 @@ tcp_state_str:
 	.uleb128 0x52
 	.string	"portLED"
 	.byte	0xe
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0x4c7b
 	.sleb128 -268184832
 	.uleb128 0x5

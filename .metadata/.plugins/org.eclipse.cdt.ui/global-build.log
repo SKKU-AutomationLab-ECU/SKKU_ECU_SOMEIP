@@ -1,6 +1,17 @@
-19:21:33 **** Incremental Build of configuration Default for project TC275_SOME_IP_Flatform ****
+21:17:12 **** Incremental Build of configuration Default for project TC275_SOME_IP_Flatform ****
 make all 
 Now the make files are generated !!!
 
 Now Build started !!!
+Compiling 0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c: In function 'TxSOMEIP_Test':
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:68:32: warning: passing argument 2 of 'SOMEIP_Payload_Set' from incompatible pointer type
+     SOMEIP_Payload_Set(&TxMsg, &testPayload, (uint32)sizeof(testPayload));
+                                ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:32:6: note: expected 'uint8 *' but argument is of type 'uint8 (*)[4]'
+ void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length)
+      ^
+ 
+Building target: 2_Out/Gnuc/TC275_SOME_IP_Flatform_Tricore.elf
+c:/hightec/toolchains/tricore/v4.9.1.0-infineon-2.0/bin/../lib/gcc/tricore/4.9.4/../../../../tricore/bin/ld.exe: warning: deprecated value 'aurix' for option '--mcpu=', use 'tc161'
 ...Done

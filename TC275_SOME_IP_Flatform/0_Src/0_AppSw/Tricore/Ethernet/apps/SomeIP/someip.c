@@ -42,6 +42,7 @@ void TxSOMEIP_Test()
 {
     struct udp_pcb *upcb;
     SOMEIP_Message TxMsg;
+    uint8 testPayload[4] = {1,2,3,4};
     err_t err;
     upcb = udp_new();
 
@@ -64,29 +65,32 @@ void TxSOMEIP_Test()
 	    }
     }
 
+    SOMEIP_Payload_Set(&TxMsg, &testPayload, (uint32)sizeof(testPayload));
 
     SOMEIP_Header_Set(&TxMsg,
                     0x1234,
                     0x5678,
-                    0,
+                    (uint32)sizeof(testPayload),
                     0x0001,
                     0x0001,
                     0x01,
                     0x01,
                     NOTIFICATION,
                     E_OK);
-    //TxMsg.Total_b.Payload = 0;
-    struct pbuf *txbuf = pbuf_alloc(PBUF_TRANSPORT, SOMEIP_HEADER_SIZE, PBUF_RAM);
+
+    struct pbuf *txbuf = pbuf_alloc(PBUF_TRANSPORT, SOMEIP_HEADER_SIZE + (uint32)sizeof(testPayload), PBUF_RAM);
     if(txbuf != NULL)
     {
         udp_connect(upcb, IP_ADDR_BROADCAST, PN_SERVICE_1);
-        pbuf_take(txbuf, &TxMsg,16);
+        //udp_connect(some_server_pcb, IP_ADDR_BROADCAST, PN_SERVICE_1);
+        pbuf_take(txbuf, &TxMsg,SOMEIP_HEADER_SIZE + (uint32)sizeof(testPayload));
 
         ip_addr_t destination_ip;
-        IP4_ADDR(&destination_ip, 192, 168, 0, 10); // Change to your destination IP address
+        IP4_ADDR(&destination_ip, 192, 168, 0, 8); // Change to your destination IP address
         u16_t destination_port = 30509U;
 
     	err = udp_sendto(upcb, txbuf, &destination_ip,destination_port);
+        //err = udp_sendto(some_server_pcb, txbuf, &destination_ip,destination_port);
     	if (err == ERR_OK)
         {
             printf_SysLog("Send SOMEIP Test Message !! \r\n");
@@ -95,7 +99,12 @@ void TxSOMEIP_Test()
         {
             printf_SysLog("udp_sendto fail!!\r\n");
         }
+    	udp_disconnect(upcb);
+
     	pbuf_free(txbuf);
+
+    	/* Remove the UDP pcb */
+    	udp_remove(upcb);
     }
     else
     {

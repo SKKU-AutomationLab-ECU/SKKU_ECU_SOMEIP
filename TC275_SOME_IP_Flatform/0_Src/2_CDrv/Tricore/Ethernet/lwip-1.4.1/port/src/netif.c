@@ -359,9 +359,10 @@ err_t ifx_netif_input(netif_t *netif)
 			printf_SysLog("UDP echo has succeed !!\r\n\n");
 			#endif
             #if SOMEIP_Client_Opt
-            someip_client_handle(p);
+
             #endif
 		case ETHTYPE_ARP:
+	        //ethernet_input(netif, p);
 #if PPPOE_SUPPORT
     /* PPPoE packet? */
     case ETHTYPE_PPPOEDISC:

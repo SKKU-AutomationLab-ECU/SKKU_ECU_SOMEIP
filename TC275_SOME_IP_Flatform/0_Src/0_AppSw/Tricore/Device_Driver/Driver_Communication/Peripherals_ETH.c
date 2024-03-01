@@ -7,6 +7,8 @@
 ==========================================
  *      <Lwip Ethernet Drivers>
  *      Revised: SJ_Lim (2024. 2. 4.)
+ *      =======
+ *      Revised: SB_Oh	(2024. 3. 1.)
  */
 
 #include <stdio.h>

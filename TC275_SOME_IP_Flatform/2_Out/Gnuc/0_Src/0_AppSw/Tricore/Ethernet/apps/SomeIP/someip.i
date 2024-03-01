@@ -21473,7 +21473,7 @@ static inline __attribute__ ((always_inline)) IfxEth *IfxEth_get(void)
 # 1 "./0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/src/include/ipv4/lwip/ip_addr.h" 1
 # 28 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 # 1 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 1
-# 25 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 27 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 # 1 "./0_Src/4_McHal/Tricore/Eth/Phy_Pef7071/IfxEth_Phy_Pef7071.h" 1
 # 48 "./0_Src/4_McHal/Tricore/Eth/Phy_Pef7071/IfxEth_Phy_Pef7071.h"
 extern uint32 IfxEth_Phy_Pef7071_init(void);
@@ -21500,11 +21500,11 @@ extern void IfxEth_Phy_Pef7071_write_mdio_reg(uint32 layeraddr, uint32 regaddr, 
 
 
 extern uint32 IfxEth_Phy_Pef7071_iPhyInitDone;
-# 26 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 2
-# 42 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 28 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 2
+# 44 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 static Ifx_P * const portLED = (Ifx_P *)&((*(Ifx_P *)0xF003D300u));
 extern int tem;
-# 55 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 57 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 typedef struct
 {
     struct
@@ -21541,7 +21541,7 @@ void Set_desIPaddr(ip_addr_t *dest_ip, uint8 IPaddr_1, uint8 IPaddr_2, uint8 IPa
 
 void Converting_UDP_TxPayload(struct pbuf *p);
 void UDP_Send_to(ip_addr_t *dest_ip, u16_t dest_port, uint8 *data);
-# 254 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 256 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 typedef enum _eth_checksum{
     correct_checksum = 0,
     wrong_checksum
@@ -21569,7 +21569,7 @@ typedef struct _ethFrameStr{
 
     uint8 dstMAC[6];
     uint8 srcMAC[6];
-# 291 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 293 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
     uint8 ethType[2];
 
 
@@ -21590,7 +21590,7 @@ typedef struct _ethFrameStr{
 
     uint8 srcIP[4];
     uint8 dstIP[4];
-# 325 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 327 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
     uint8 srcPN[2];
     uint8 dstPN[2];
     uint8 SeqNum[4];
@@ -21613,7 +21613,7 @@ typedef struct _ethFrameStr{
     uint8 TCS[2];
 
     uint8 UrgentPtr[2];
-# 425 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+# 427 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
     uint8 payload[1500 - 20 - 20];
 
 } ethFrameStr;
@@ -21873,6 +21873,7 @@ void TxSOMEIP_Test()
 {
     struct udp_pcb *upcb;
     SOMEIP_Message TxMsg;
+    uint8 testPayload[4] = {1,2,3,4};
     err_t err;
     upcb = udp_new();
 
@@ -21895,11 +21896,12 @@ void TxSOMEIP_Test()
      }
     }
 
+    SOMEIP_Payload_Set(&TxMsg, &testPayload, (uint32)sizeof(testPayload));
 
     SOMEIP_Header_Set(&TxMsg,
                     0x1234,
                     0x5678,
-                    0,
+                    (uint32)sizeof(testPayload),
                     0x0001,
                     0x0001,
                     0x01,
@@ -21907,17 +21909,19 @@ void TxSOMEIP_Test()
                     NOTIFICATION,
                     E_OK);
 
-    struct pbuf *txbuf = pbuf_alloc(PBUF_TRANSPORT, 16, PBUF_RAM);
+    struct pbuf *txbuf = pbuf_alloc(PBUF_TRANSPORT, 16 + (uint32)sizeof(testPayload), PBUF_RAM);
     if(txbuf != ((void *)0))
     {
         udp_connect(upcb, ((ip_addr_t *)&ip_addr_broadcast), 30509U);
-        pbuf_take(txbuf, &TxMsg,16);
+
+        pbuf_take(txbuf, &TxMsg,16 + (uint32)sizeof(testPayload));
 
         ip_addr_t destination_ip;
-        (&destination_ip)->addr = ((u32_t)((10) & 0xff) << 24) | ((u32_t)((0) & 0xff) << 16) | ((u32_t)((168) & 0xff) << 8) | (u32_t)((192) & 0xff);
+        (&destination_ip)->addr = ((u32_t)((8) & 0xff) << 24) | ((u32_t)((0) & 0xff) << 16) | ((u32_t)((168) & 0xff) << 8) | (u32_t)((192) & 0xff);
         u16_t destination_port = 30509U;
 
      err = udp_sendto(upcb, txbuf, &destination_ip,destination_port);
+
      if (err == 0)
         {
             printf_SysLog("Send SOMEIP Test Message !! \r\n");
@@ -21926,7 +21930,12 @@ void TxSOMEIP_Test()
         {
             printf_SysLog("udp_sendto fail!!\r\n");
         }
+     udp_disconnect(upcb);
+
      pbuf_free(txbuf);
+
+
+     udp_remove(upcb);
     }
     else
     {

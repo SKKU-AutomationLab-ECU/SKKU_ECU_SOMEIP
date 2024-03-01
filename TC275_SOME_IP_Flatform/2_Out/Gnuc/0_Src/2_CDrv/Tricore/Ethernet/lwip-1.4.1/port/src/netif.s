@@ -226,17 +226,17 @@ ifx_netif_input:
 	jeq	%d2, %d15, .L20
 .LVL33:
 .L29:
-	.loc 1 384 0
+	.loc 1 385 0
 	mov.aa	%a4, %a12
 	call	pbuf_free
 .LVL34:
 .L15:
-	.loc 1 390 0
+	.loc 1 391 0
 	mov	%d2, 0
 	ret
 .LVL35:
 .L20:
-	.loc 1 372 0
+	.loc 1 373 0
 	ld.a	%a15, [%a14] 16
 .LVL36:
 	mov.aa	%a4, %a12
@@ -244,7 +244,7 @@ ifx_netif_input:
 	calli	%a15
 .LVL37:
 	jnz	%d2, .L29
-	.loc 1 390 0
+	.loc 1 391 0
 	mov	%d2, 0
 	ret
 .LVL38:
@@ -257,7 +257,7 @@ ifx_netif_input:
 	ld.h	%d15, [%a15] 12
 .LBE38:
 .LBE40:
-	.loc 1 390 0
+	.loc 1 391 0
 	mov	%d2, 0
 .LBB41:
 .LBB39:
@@ -270,7 +270,7 @@ ifx_netif_input:
 	st.h	[%a15] 6, %d15
 .LBE39:
 .LBE41:
-	.loc 1 390 0
+	.loc 1 391 0
 	ret
 .LFE245:
 	.size	ifx_netif_input, .-ifx_netif_input
@@ -283,37 +283,37 @@ ifx_netif_input:
 	.type	ifx_netif_init, @function
 ifx_netif_init:
 .LFB246:
-	.loc 1 407 0
+	.loc 1 408 0
 .LVL39:
 	sub.a	%SP, 64
 .LCFI1:
-	.loc 1 407 0
+	.loc 1 408 0
 	mov.aa	%a15, %a4
-	.loc 1 410 0
+	.loc 1 411 0
 	jz.a	%a4, .L35
 .LVL40:
 .L32:
-	.loc 1 434 0
+	.loc 1 435 0
 	mov	%d15, 101
-	.loc 1 433 0
+	.loc 1 434 0
 	movh.a	%a4, hi:g_IfxEth
 	lea	%a4, [%a4] lo:g_IfxEth
-	.loc 1 434 0
-	st.b	[%a15] 42, %d15
 	.loc 1 435 0
+	st.b	[%a15] 42, %d15
+	.loc 1 436 0
 	mov	%d15, 110
 	movh	%d3, hi:g_Lwip
-	.loc 1 433 0
+	.loc 1 434 0
 	st.a	[%a15] 28, %a4
-	.loc 1 435 0
+	.loc 1 436 0
 	st.b	[%a15] 43, %d15
-	.loc 1 440 0
+	.loc 1 441 0
 	movh	%d15, hi:etharp_output
 	addi	%d15, %d15, lo:etharp_output
 	addi	%d3, %d3, lo:g_Lwip
 	mov.a	%a2, 5
 	st.w	[%a15] 20, %d15
-	.loc 1 441 0
+	.loc 1 442 0
 	movh	%d15, hi:low_level_output
 	addi	%d15, %d15, lo:low_level_output
 	st.w	[%a15] 24, %d15
@@ -407,19 +407,19 @@ ifx_netif_init:
 .LBE49:
 .LBE47:
 .LBE46:
-	.loc 1 448 0
+	.loc 1 449 0
 	mov	%d2, 0
 	ret
 .LVL47:
 .L35:
-	.loc 1 410 0 discriminator 1
+	.loc 1 411 0 discriminator 1
 	movh	%d15, hi:.LC3
 	addi	%d15, %d15, lo:.LC3
 	movh.a	%a4, hi:.LC0
 .LVL48:
 	lea	%a4, [%a4] lo:.LC0
 	st.w	[%SP]0, %d15
-	mov	%d15, 410
+	mov	%d15, 411
 	st.w	[%SP] 4, %d15
 	movh	%d15, hi:.LC2
 	addi	%d15, %d15, lo:.LC2
@@ -19785,7 +19785,7 @@ rmii_pins:
 	.byte	0x1
 	.string	"ifx_netif_init"
 	.byte	0x1
-	.uahalf	0x196
+	.uahalf	0x197
 	.byte	0x1
 	.uaword	0x3ad
 	.uaword	.LFB246
@@ -19797,20 +19797,20 @@ rmii_pins:
 	.uleb128 0x3e
 	.uaword	.LASF0
 	.byte	0x1
-	.uahalf	0x196
+	.uahalf	0x197
 	.uaword	0xdf3c
 	.uaword	.LLST13
 	.uleb128 0x48
 	.uaword	.LASF30
 	.byte	0x1
-	.uahalf	0x198
+	.uahalf	0x199
 	.uaword	0xde5c
 	.uleb128 0x49
 	.uaword	0xe211
 	.uaword	.LBB46
 	.uaword	.LBE46
 	.byte	0x1
-	.uahalf	0x1bc
+	.uahalf	0x1bd
 	.uaword	0xe2f4
 	.uleb128 0x41
 	.uaword	0xe229
@@ -19865,7 +19865,7 @@ rmii_pins:
 	.sleb128 4
 	.byte	0x3
 	.byte	0xa
-	.uahalf	0x19a
+	.uahalf	0x19b
 	.uleb128 0x3b
 	.byte	0x2
 	.byte	0x8a
@@ -19878,7 +19878,7 @@ rmii_pins:
 	.uleb128 0x4b
 	.string	"portLED"
 	.byte	0x13
-	.byte	0x2a
+	.byte	0x2c
 	.uaword	0xe335
 	.sleb128 -268184832
 	.uleb128 0x5
