@@ -17,7 +17,12 @@
 #include "g_endian.h"
 
 #include "lwip/opt.h"
+
+#include "lwip/def.h"
+#include "lwip/pbuf.h"
 #include "lwip/debug.h"
+#include "lwip/err.h"
+#include "lwip/netif.h"
 #include "lwip/stats.h"
 #include "lwip/udp.h"
 #include "Device_IF.h"
@@ -27,6 +32,8 @@
 #include "ip_addr.h"
 #include "Peripherals_ETH.h"
 
+
+IFX_EXTERN struct udp_pcb *service_discovery_pcb;
 
 /******************************************/
 /*---------SOME/IP Serialization----------*/
@@ -128,6 +135,50 @@ typedef struct
 } SOMEIP_Message;
 
 /******************************************************************************/
+/*-----------------------Structure of SOME/IP Header--------------------------*/
+/******************************************************************************/
+typedef struct
+{
+    union
+    {
+        // Total
+        uint8 Total[16];
+        // Total Message - Header + Payload
+        struct
+        {
+            // Header
+            union
+            {
+                // Total Header
+                uint8 Header[16];
+                // SOME/IP header
+                struct
+                {
+                    // Message ID - Service ID
+                    uint16 Service_ID;
+                    // Message ID - method ID
+                    uint16 Method_ID;
+                    // Length
+                    uint32 Length;
+                    // Request ID - Client ID
+                    uint16 Client_ID;
+                    // Message ID - Session ID
+                    uint16 Session_ID;
+                    // Protocol Version
+                    uint8 Protocol_Version;    // Protocol Version shall be 0x01. (RS_SOMEIP_00027, RS_SOMEIP_00041)
+                    // Interface Version
+                    uint8 Interface_Version;   // We defined this code's interface version is 0x01.
+                    // Message Type
+                    uint8 Message_Type;
+                    // Return Code
+                    uint8 Return_Code;
+                } Header_b;
+            };
+        } Total_b;
+    };
+} SOMEIP_Header;
+
+/******************************************************************************/
 /*------------------------SOME/IP-Service Discovery---------------------------*/
 /******************************************************************************/
 #define SD_SERVICE_ID           0xFFFF
@@ -170,11 +221,15 @@ typedef struct
         uint32 Total;
         struct
         {
-            uint32 Reserved : 24;
             uint32 Flags : 8;
+            uint32 Reserved : 24;
         } Total_b;
     };
 } SOMEIP_SD_Flags;
+
+/******************************************************************************/
+/*--------------------LwIP:Structure of SOME/IP Message-----------------------*/
+/******************************************************************************/
 
 typedef struct _ServiceEntryStr{
     ///////////////////////////////////////////////////////
@@ -184,8 +239,8 @@ typedef struct _ServiceEntryStr{
     uint8 Type;                                    // SOME/IP Service Discovery Type
     uint8 OptionIdx1st;                            // Entry 1st Option Index in OptionArray
     uint8 OptionIdx2nd;                            // Entry 2nd Option Index in OptionArray
-    uint8 OptionNum1st : 4;                        // Number of Entry 1st Options
-    uint8 OptionNum2nd : 4;                        // Number of Entry 2nd Options
+    uint8 OptionNum2nd : 4;                        // Number of Entry 1st Options
+    uint8 OptionNum1st : 4;                        // Number of Entry 2nd Options
 
     uint16 ServiceID;                              // Service Entry Service ID
     uint16 InstanceID;                             // Service Entry Instance ID
@@ -202,8 +257,8 @@ typedef struct _EventGroupEntryStr{
     uint8 Type;                                   // SOME/IP Service Discovery Type
     uint8 OptionIdx1st;                           // Entry 1st Option Index in OptionArray
     uint8 OptionIdx2nd;                           // Entry 2nd Option Index in OptionArray
-    uint8 OptionNum1st : 4;                       // Number of Entry 1st Options
-    uint8 OptionNum2nd : 4;                       // Number of Entry 2nd Options
+    uint8 OptionNum2nd : 4;                       // Number of Entry 1st Options
+    uint8 OptionNum1st : 4;                       // Number of Entry 2nd Options
 
 
     uint16 ServiceID;                              // Service Entry Service ID
@@ -214,6 +269,15 @@ typedef struct _EventGroupEntryStr{
     uint16 EventGroupID;                           // EventGroup ID
 } SOMEIP_SD_EventGroupEntry;
 
+typedef struct _SDOptionDefaultStr{
+    ////////////////////////////////////////////////////////////////////////////////
+    /// SOME/IP Service Discovery Option Default header (Length, Type, Reserved) ///
+    ////////////////////////////////////////////////////////////////////////////////
+    uint16 Length;                                // Option array length
+    uint8 Type;                                   // Option Type
+    uint8 _Reserved;                              // Reserved
+} SOMEIP_SD_OptionDefault;
+
 typedef struct _IPv4EndpntOptionStr{
     ///////////////////////////////////////////////////////////////
     /// SOME/IP Service Discovery IPv4 Endpoint Option Section ///
@@ -221,11 +285,25 @@ typedef struct _IPv4EndpntOptionStr{
     uint16 Length;                                 // Should be set to 0x0009
     uint8 Type;                                    // Should be set to 0x04
     uint8 Reserved_1;                              // Reserved
-    uint32 IPv4Addr;                               // IPv4 address
+    uint8 IPv4Addr[4];                             // IPv4 address
     uint8 Reserved_2;                              // Reserved
     uint8 L4_Proto;                                // 0x11 = UDP, 0x06 = TCP
     uint16 Port_Number;                            // Port Number
 } SOMEIP_SD_IPv4EndpntOption;
+
+typedef struct _SD_MessageStr{
+    SOMEIP_Header _SOMEIP_Header;
+    SOMEIP_SD_Flags _SD_Flags;
+    uint32 _EntryArrayLength;
+    union
+    {
+        SOMEIP_SD_ServiceEntry _SD_ServiceEntry;
+        SOMEIP_SD_EventGroupEntry _SD_EventGroupEntry;
+    };
+    uint32 _OptionArrayLength;
+    SOMEIP_SD_IPv4EndpntOption _IPv4EndpointOption;
+
+} SOMEIP_SD_Message;
 
 /******************************************************************************/
 /*------------------------------Global variables------------------------------*/
@@ -234,7 +312,14 @@ typedef struct _IPv4EndpntOptionStr{
 /******************************************************************************/
 /*-------------------------Function Prototypes--------------------------------*/
 /******************************************************************************/
-/* SOME/IP Basic Communication */
+void Service_Discovery_Init(void);
+
+/* The following functions are the application layewr interface to receive SOME/IP message */
+void SOMEIP_input(struct pbuf *p);
+void Rx_someip_handle(struct pbuf *p);
+void Rx_someip_sd_handle(struct pbuf *p);
+
+/* The following functions are the application layer interface to set SOME/IP header. */
 void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint16 Service_ID,
                     uint16 Method_ID,
@@ -247,10 +332,11 @@ void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint8 Return_Code);
 void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length);
 
+/* The following functions are the application layer interface to communicate SOME/IP message. */
 void TxSOMEIP_Request();
 void TxSOMEIP_Response();
 
-/* SOME/IP-SD Communication */
+/* The following functions are the application layer interface to set SOME/IP-SD header. */
 void SOMEIP_SD_Header_Set();
 void SOMEIP_SD_Flags_Set();
 void SOMEIP_SD_EntryLength_Set();
@@ -259,10 +345,10 @@ void SOMEIP_SD_EventGroupEntry_Set();
 void SOMEIP_SD_OptionLength_Set();
 void SOMEIP_SD_IPv4EndptOption_Set();
 
+/* The following functions are the application layer interface to communicate SOME/IP-SD message */
 void TxSOMEIP_SD_Offer();
-void TxSOMEIP_SD_Subscribe();
-void TxSOMEIP_SD_SubscribeACK();
-
+void TxSOMEIP_SD_Subscribe(SOMEIP_SD_ServiceEntry *_ServiceEntry, SOMEIP_SD_IPv4EndpntOption *_IPv4EndpointOption);
+void TxSOMEIP_SD_ACK();
 void TxSOMEIP_SD_Event();
 
 /* SOME/IP Packets Transmission Test */

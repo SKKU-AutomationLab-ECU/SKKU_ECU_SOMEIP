@@ -21142,6 +21142,146 @@ typedef struct _ethFrameStr_ARP{
     uint8 targetIP[4];
 
 } ethFrameStr_ARP;
+
+typedef struct _ethFrameStr_SOMEIP{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 477 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+    uint8 payload[1500 - 20 - 8 - 16];
+
+} ethFrameStr_SOMEIP;
+
+typedef struct _ethFrameStr_SD{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 552 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+
+    uint8 : 6;
+    uint8 UnicastFlag : 1;
+    uint8 RebootFlag : 1;
+
+    uint8 SDReserved[3];
+    uint8 EntryArrayLength[4];
+
+    uint8 payload[1500 - 20 - 8 - 16 - 8];
+
+} ethFrameStr_SD;
 # 61 "0_Src/0_AppSw/Tricore/Ethernet/apps/Echo_Test/udp_echo.c" 2
 
 # 1 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 1
@@ -21636,7 +21776,9 @@ uint16 swap_uint16(uint16 val);
 
 uint32 swap_uint32(uint32 val);
 # 18 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
-# 52 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+# 36 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+extern struct udp_pcb *service_discovery_pcb;
+# 59 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
 typedef enum
 {
     REQUEST = 0x00,
@@ -21714,7 +21856,51 @@ typedef struct
         } Total_b;
     };
 } SOMEIP_Message;
-# 151 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+
+
+
+
+typedef struct
+{
+    union
+    {
+
+        uint8 Total[16];
+
+        struct
+        {
+
+            union
+            {
+
+                uint8 Header[16];
+
+                struct
+                {
+
+                    uint16 Service_ID;
+
+                    uint16 Method_ID;
+
+                    uint32 Length;
+
+                    uint16 Client_ID;
+
+                    uint16 Session_ID;
+
+                    uint8 Protocol_Version;
+
+                    uint8 Interface_Version;
+
+                    uint8 Message_Type;
+
+                    uint8 Return_Code;
+                } Header_b;
+            };
+        } Total_b;
+    };
+} SOMEIP_Header;
+# 202 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
 typedef enum
 {
     SD_TYPE_FIND = 0x00,
@@ -21737,11 +21923,15 @@ typedef struct
         uint32 Total;
         struct
         {
-            uint32 Reserved : 24;
             uint32 Flags : 8;
+            uint32 Reserved : 24;
         } Total_b;
     };
 } SOMEIP_SD_Flags;
+
+
+
+
 
 typedef struct _ServiceEntryStr{
 
@@ -21751,8 +21941,8 @@ typedef struct _ServiceEntryStr{
     uint8 Type;
     uint8 OptionIdx1st;
     uint8 OptionIdx2nd;
-    uint8 OptionNum1st : 4;
     uint8 OptionNum2nd : 4;
+    uint8 OptionNum1st : 4;
 
     uint16 ServiceID;
     uint16 InstanceID;
@@ -21769,8 +21959,8 @@ typedef struct _EventGroupEntryStr{
     uint8 Type;
     uint8 OptionIdx1st;
     uint8 OptionIdx2nd;
-    uint8 OptionNum1st : 4;
     uint8 OptionNum2nd : 4;
+    uint8 OptionNum1st : 4;
 
 
     uint16 ServiceID;
@@ -21781,6 +21971,15 @@ typedef struct _EventGroupEntryStr{
     uint16 EventGroupID;
 } SOMEIP_SD_EventGroupEntry;
 
+typedef struct _SDOptionDefaultStr{
+
+
+
+    uint16 Length;
+    uint8 Type;
+    uint8 _Reserved;
+} SOMEIP_SD_OptionDefault;
+
 typedef struct _IPv4EndpntOptionStr{
 
 
@@ -21788,12 +21987,34 @@ typedef struct _IPv4EndpntOptionStr{
     uint16 Length;
     uint8 Type;
     uint8 Reserved_1;
-    uint32 IPv4Addr;
+    uint8 IPv4Addr[4];
     uint8 Reserved_2;
     uint8 L4_Proto;
     uint16 Port_Number;
 } SOMEIP_SD_IPv4EndpntOption;
-# 238 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+
+typedef struct _SD_MessageStr{
+    SOMEIP_Header _SOMEIP_Header;
+    SOMEIP_SD_Flags _SD_Flags;
+    uint32 _EntryArrayLength;
+    union
+    {
+        SOMEIP_SD_ServiceEntry _SD_ServiceEntry;
+        SOMEIP_SD_EventGroupEntry _SD_EventGroupEntry;
+    };
+    uint32 _OptionArrayLength;
+    SOMEIP_SD_IPv4EndpntOption _IPv4EndpointOption;
+
+} SOMEIP_SD_Message;
+# 315 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+void Service_Discovery_Init(void);
+
+
+void SOMEIP_input(struct pbuf *p);
+void Rx_someip_handle(struct pbuf *p);
+void Rx_someip_sd_handle(struct pbuf *p);
+
+
 void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint16 Service_ID,
                     uint16 Method_ID,
@@ -21805,6 +22026,7 @@ void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint8 Message_Type,
                     uint8 Return_Code);
 void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length);
+
 
 void TxSOMEIP_Request();
 void TxSOMEIP_Response();
@@ -21818,10 +22040,10 @@ void SOMEIP_SD_EventGroupEntry_Set();
 void SOMEIP_SD_OptionLength_Set();
 void SOMEIP_SD_IPv4EndptOption_Set();
 
-void TxSOMEIP_SD_Offer();
-void TxSOMEIP_SD_Subscribe();
-void TxSOMEIP_SD_SubscribeACK();
 
+void TxSOMEIP_SD_Offer();
+void TxSOMEIP_SD_Subscribe(SOMEIP_SD_ServiceEntry *_ServiceEntry, SOMEIP_SD_IPv4EndpntOption *_IPv4EndpointOption);
+void TxSOMEIP_SD_ACK();
 void TxSOMEIP_SD_Event();
 
 
@@ -21865,7 +22087,7 @@ void udp_echoserver_receive_callback(void *arg, struct udp_pcb *upcb, struct pbu
 void udp_echo_init(void)
 {
   struct udp_pcb *upcb;
-  err_t err;
+  err_t err, errVal;
 
 
   upcb = udp_new();
@@ -21874,27 +22096,29 @@ void udp_echo_init(void)
   {
 
 
-     err = udp_bind(upcb, ((ip_addr_t *)&ip_addr_any), 30400U);
+    err = udp_bind(upcb, ((ip_addr_t *)&ip_addr_any), 30490U);
 
-     if(err == 0)
-     {
-       printf_SysLog("UDP/IP Bind is OK!\r\n");
+    if(err == 0)
+    {
+        printf_SysLog("UDP/IP Bind is OK!\r\n");
+        errVal = udp_connect(upcb, ((ip_addr_t *)&ip_addr_any), 30490U);
+        if(errVal == 0)
+        {
+          printf_SysLog("UDP/IP connect is OK!!\r\n");
 
-
-       udp_recv(upcb, udp_echoserver_receive_callback, ((void *)0));
-
+          udp_recv(upcb, udp_echoserver_receive_callback, ((void *)0));
+        }
      }
      else
      {
        udp_remove(upcb);
      }
   }
-
   ip_addr_t server_ip;
-  (&server_ip)->addr = ((u32_t)((10) & 0xff) << 24) | ((u32_t)((0) & 0xff) << 16) | ((u32_t)((168) & 0xff) << 8) | (u32_t)((192) & 0xff);
+  (&server_ip)->addr = ((u32_t)((8) & 0xff) << 24) | ((u32_t)((0) & 0xff) << 16) | ((u32_t)((168) & 0xff) << 8) | (u32_t)((192) & 0xff);
 
   eth_addr_t server_Eth;
-  (&server_Eth)->addr[0] = 0x58; (&server_Eth)->addr[1] = 0x86; (&server_Eth)->addr[2] = 0x94; (&server_Eth)->addr[3] = 0xFB; (&server_Eth)->addr[4] = 0xAD; (&server_Eth)->addr[5] = 0x3A;;
+  (&server_Eth)->addr[0] = 0x48; (&server_Eth)->addr[1] = 0xb0; (&server_Eth)->addr[2] = 0x2d; (&server_Eth)->addr[3] = 0x83; (&server_Eth)->addr[4] = 0x97; (&server_Eth)->addr[5] = 0xaa;;
 
   err = etharp_add_static_entry(&server_ip, &server_Eth);
 

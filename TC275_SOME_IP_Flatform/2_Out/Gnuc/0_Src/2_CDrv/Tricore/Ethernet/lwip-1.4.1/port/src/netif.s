@@ -141,10 +141,10 @@ ifx_netif_input:
 .LVL19:
 	ld.a	%a15, [%a13] 92
 .LVL20:
-.LBB33:
 .LBB34:
 .LBB35:
 .LBB36:
+.LBB37:
 	.loc 2 1058 0
 	ld.w	%d5, [%a15]0
 	jltz	%d5, .L15
@@ -152,8 +152,8 @@ ifx_netif_input:
 	.loc 2 1060 0
 	extr.u	%d5, %d5, 16, 14
 .LVL22:
+.LBE37:
 .LBE36:
-.LBE35:
 	.loc 1 253 0
 	jz	%d5, .L15
 	mov.aa	%a14, %a4
@@ -166,7 +166,7 @@ ifx_netif_input:
 .LVL24:
 	.loc 1 268 0
 	jz.a	%a2, .L17
-.LBB37:
+.LBB38:
 	.loc 1 274 0
 	mov.aa	%a4, %a13
 	call	IfxEth_getReceiveBuffer
@@ -209,10 +209,10 @@ ifx_netif_input:
 	add	%d15, 1
 	st.h	[%a15] 2, %d15
 .LVL31:
-.LBE37:
+.LBE38:
+.LBE35:
 .LBE34:
-.LBE33:
-	.loc 1 352 0
+	.loc 1 350 0
 	ld.a	%a15, [%a12] 4
 	ld.bu	%d15, [%a15] 13
 	ld.bu	%d4, [%a15] 12
@@ -223,44 +223,64 @@ ifx_netif_input:
 	mov	%d15, 2048
 	jeq	%d2, %d15, .L20
 	mov	%d15, 2054
-	jeq	%d2, %d15, .L20
-.LVL33:
-.L29:
-	.loc 1 385 0
-	mov.aa	%a4, %a12
-	call	pbuf_free
-.LVL34:
-.L15:
-	.loc 1 391 0
-	mov	%d2, 0
-	ret
-.LVL35:
-.L20:
-	.loc 1 373 0
+	jne	%d2, %d15, .L30
+.LBB41:
+	.loc 1 371 0
 	ld.a	%a15, [%a14] 16
-.LVL36:
+.LVL33:
 	mov.aa	%a4, %a12
 	mov.aa	%a5, %a14
 	calli	%a15
+.LVL34:
+	jnz	%d2, .L30
+.LVL35:
+.L15:
+.LBE41:
+	.loc 1 389 0
+	mov	%d2, 0
+	ret
+.LVL36:
+.L30:
+.LBB42:
+	.loc 1 383 0
+	mov.aa	%a4, %a12
+	call	pbuf_free
 .LVL37:
-	jnz	%d2, .L29
-	.loc 1 391 0
+.LBE42:
+	.loc 1 389 0
 	mov	%d2, 0
 	ret
 .LVL38:
+.L20:
+.LBB43:
+	.loc 1 360 0
+	mov.aa	%a4, %a12
+	call	SOMEIP_input
+.LVL39:
+	.loc 1 371 0
+	ld.a	%a15, [%a14] 16
+.LVL40:
+	mov.aa	%a4, %a12
+	mov.aa	%a5, %a14
+	calli	%a15
+.LVL41:
+	jz	%d2, .L15
+	j	.L30
+.LVL42:
 .L17:
-.LBB40:
-.LBB38:
+.LBE43:
+.LBB44:
+.LBB39:
 	.loc 1 312 0
 	movh.a	%a15, hi:lwip_stats
 	lea	%a15, [%a15] lo:lwip_stats
 	ld.h	%d15, [%a15] 12
-.LBE38:
-.LBE40:
-	.loc 1 391 0
+.LBE39:
+.LBE44:
+	.loc 1 389 0
 	mov	%d2, 0
-.LBB41:
-.LBB39:
+.LBB45:
+.LBB40:
 	.loc 1 312 0
 	add	%d15, 1
 	st.h	[%a15] 12, %d15
@@ -268,9 +288,9 @@ ifx_netif_input:
 	ld.h	%d15, [%a15] 6
 	add	%d15, 1
 	st.h	[%a15] 6, %d15
-.LBE39:
-.LBE41:
-	.loc 1 391 0
+.LBE40:
+.LBE45:
+	.loc 1 389 0
 	ret
 .LFE245:
 	.size	ifx_netif_input, .-ifx_netif_input
@@ -283,50 +303,50 @@ ifx_netif_input:
 	.type	ifx_netif_init, @function
 ifx_netif_init:
 .LFB246:
-	.loc 1 408 0
-.LVL39:
+	.loc 1 406 0
+.LVL43:
 	sub.a	%SP, 64
 .LCFI1:
-	.loc 1 408 0
+	.loc 1 406 0
 	mov.aa	%a15, %a4
-	.loc 1 411 0
+	.loc 1 409 0
 	jz.a	%a4, .L35
-.LVL40:
+.LVL44:
 .L32:
-	.loc 1 435 0
+	.loc 1 433 0
 	mov	%d15, 101
-	.loc 1 434 0
+	.loc 1 432 0
 	movh.a	%a4, hi:g_IfxEth
 	lea	%a4, [%a4] lo:g_IfxEth
-	.loc 1 435 0
+	.loc 1 433 0
 	st.b	[%a15] 42, %d15
-	.loc 1 436 0
+	.loc 1 434 0
 	mov	%d15, 110
 	movh	%d3, hi:g_Lwip
-	.loc 1 434 0
+	.loc 1 432 0
 	st.a	[%a15] 28, %a4
-	.loc 1 436 0
+	.loc 1 434 0
 	st.b	[%a15] 43, %d15
-	.loc 1 441 0
+	.loc 1 439 0
 	movh	%d15, hi:etharp_output
 	addi	%d15, %d15, lo:etharp_output
 	addi	%d3, %d3, lo:g_Lwip
 	mov.a	%a2, 5
 	st.w	[%a15] 20, %d15
-	.loc 1 442 0
+	.loc 1 440 0
 	movh	%d15, hi:low_level_output
 	addi	%d15, %d15, lo:low_level_output
 	st.w	[%a15] 24, %d15
-.LVL41:
-.LBB46:
-.LBB47:
+.LVL45:
+.LBB50:
+.LBB51:
 	.loc 1 112 0
 	mov	%d15, 6
 	st.b	[%a15] 34, %d15
-.LVL42:
+.LVL46:
 	.loc 1 115 0
 	mov	%d15, 0
-.LVL43:
+.LVL47:
 .L33:
 	.loc 1 117 0
 	mov.a	%a5, %d3
@@ -335,24 +355,24 @@ ifx_netif_init:
 	addsc.a	%a3, %a15, %d15, 0
 	.loc 1 115 0
 	add	%d15, 1
-.LVL44:
+.LVL48:
 	.loc 1 117 0
 	st.b	[%a3] 35, %d2
 	.loc 1 115 0
 	loop	%a2, .L33
 	.loc 1 121 0
 	mov	%d15, 1500
-.LVL45:
-.LBB48:
+.LVL49:
+.LBB52:
 	.loc 1 152 0
 	lea	%a5, [%SP] 16
-.LBE48:
+.LBE52:
 	.loc 1 121 0
 	st.h	[%a15] 32, %d15
 	.loc 1 126 0
 	mov	%d15, 34
 	st.b	[%a15] 41, %d15
-.LBB49:
+.LBB53:
 	.loc 1 132 0
 	ld.bu	%d15, [%a15] 35
 	st.b	[%SP] 16, %d15
@@ -403,29 +423,29 @@ ifx_netif_init:
 	st.w	[%SP] 60, %d15
 	.loc 1 152 0
 	call	IfxEth_init
-.LVL46:
-.LBE49:
-.LBE47:
-.LBE46:
-	.loc 1 449 0
+.LVL50:
+.LBE53:
+.LBE51:
+.LBE50:
+	.loc 1 447 0
 	mov	%d2, 0
 	ret
-.LVL47:
+.LVL51:
 .L35:
-	.loc 1 411 0 discriminator 1
+	.loc 1 409 0 discriminator 1
 	movh	%d15, hi:.LC3
 	addi	%d15, %d15, lo:.LC3
 	movh.a	%a4, hi:.LC0
-.LVL48:
+.LVL52:
 	lea	%a4, [%a4] lo:.LC0
 	st.w	[%SP]0, %d15
-	mov	%d15, 411
+	mov	%d15, 409
 	st.w	[%SP] 4, %d15
 	movh	%d15, hi:.LC2
 	addi	%d15, %d15, lo:.LC2
 	st.w	[%SP] 8, %d15
 	call	Ifx_Lwip_printf
-.LVL49:
+.LVL53:
 	j	.L32
 .LFE246:
 	.size	ifx_netif_init, .-ifx_netif_init
@@ -513,7 +533,7 @@ rmii_pins:
 	.file 20 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/def.h"
 .section .debug_info,"",@progbits
 .Ldebug_info0:
-	.uaword	0xe63f
+	.uaword	0xe6a2
 	.uahalf	0x3
 	.uaword	.Ldebug_abbrev0
 	.byte	0x4
@@ -19525,7 +19545,7 @@ rmii_pins:
 	.uaword	.LLST5
 	.uleb128 0x3a
 	.uaword	.LVL3
-	.uaword	0xe4d5
+	.uaword	0xe524
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x64
@@ -19537,7 +19557,7 @@ rmii_pins:
 	.byte	0
 	.uleb128 0x3c
 	.uaword	.LVL11
-	.uaword	0xe503
+	.uaword	0xe552
 	.uaword	0xe099
 	.uleb128 0x3b
 	.byte	0x1
@@ -19569,7 +19589,7 @@ rmii_pins:
 	.byte	0
 	.uleb128 0x3a
 	.uaword	.LVL14
-	.uaword	0xe528
+	.uaword	0xe577
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x54
@@ -19586,7 +19606,7 @@ rmii_pins:
 	.byte	0
 	.uleb128 0x3a
 	.uaword	.LVL17
-	.uaword	0xe528
+	.uaword	0xe577
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x64
@@ -19607,7 +19627,7 @@ rmii_pins:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xe20b
+	.uaword	0xe25a
 	.uleb128 0x3e
 	.uaword	.LASF0
 	.byte	0x1
@@ -19618,23 +19638,24 @@ rmii_pins:
 	.string	"ethhdr"
 	.byte	0x1
 	.uahalf	0x14e
-	.uaword	0xe20b
+	.uaword	0xe25a
 	.uaword	.LLST7
-	.uleb128 0x28
+	.uleb128 0x3f
 	.string	"p"
 	.byte	0x1
 	.uahalf	0x14f
 	.uaword	0xdf36
+	.uaword	.LLST8
 	.uleb128 0x40
 	.uaword	0xded7
-	.uaword	.LBB33
+	.uaword	.LBB34
 	.uaword	.Ldebug_ranges0+0
 	.byte	0x1
 	.uahalf	0x153
-	.uaword	0xe1d8
+	.uaword	0xe1dc
 	.uleb128 0x41
 	.uaword	0xdef4
-	.uaword	.LLST8
+	.uaword	.LLST9
 	.uleb128 0x42
 	.uaword	.Ldebug_ranges0+0
 	.uleb128 0x43
@@ -19643,44 +19664,44 @@ rmii_pins:
 	.byte	0x6d
 	.uleb128 0x39
 	.uaword	0xdf0a
-	.uaword	.LLST9
+	.uaword	.LLST10
 	.uleb128 0x39
 	.uaword	0xdf13
-	.uaword	.LLST10
+	.uaword	.LLST11
 	.uleb128 0x43
 	.uaword	0xdf1c
 	.byte	0x1
 	.byte	0x55
 	.uleb128 0x36
 	.uaword	0xde96
-	.uaword	.LBB35
-	.uaword	.LBE35
+	.uaword	.LBB36
+	.uaword	.LBE36
 	.byte	0x1
 	.byte	0xfb
-	.uaword	0xe187
+	.uaword	0xe18b
 	.uleb128 0x44
 	.uaword	0xdebb
 	.byte	0x1
 	.byte	0x6d
 	.uleb128 0x38
-	.uaword	.LBB36
-	.uaword	.LBE36
+	.uaword	.LBB37
+	.uaword	.LBE37
 	.uleb128 0x39
 	.uaword	0xdec7
-	.uaword	.LLST11
+	.uaword	.LLST12
 	.byte	0
 	.byte	0
 	.uleb128 0x34
-	.uaword	.LBB37
-	.uaword	.LBE37
-	.uaword	0xe1c2
+	.uaword	.LBB38
+	.uaword	.LBE38
+	.uaword	0xe1c6
 	.uleb128 0x39
 	.uaword	0xdf28
-	.uaword	.LLST12
+	.uaword	.LLST13
 	.uleb128 0x3c
 	.uaword	.LVL25
-	.uaword	0xe558
-	.uaword	0xe1b1
+	.uaword	0xe5a7
+	.uaword	0xe1b5
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x64
@@ -19690,7 +19711,7 @@ rmii_pins:
 	.byte	0
 	.uleb128 0x3a
 	.uaword	.LVL30
-	.uaword	0xe585
+	.uaword	0xe5d4
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x64
@@ -19701,7 +19722,7 @@ rmii_pins:
 	.byte	0
 	.uleb128 0x3a
 	.uaword	.LVL23
-	.uaword	0xe5af
+	.uaword	0xe5fe
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x56
@@ -19716,12 +19737,30 @@ rmii_pins:
 	.byte	0
 	.byte	0
 	.uleb128 0x45
-	.uaword	.LVL32
-	.uaword	0xe5d8
-	.uleb128 0x3c
+	.uaword	.Ldebug_ranges0+0x20
+	.uaword	0xe250
+	.uleb128 0x46
+	.byte	0x1
+	.uaword	.LASF31
+	.byte	0x1
+	.uahalf	0x168
+	.uaword	0x1c0
+	.byte	0x1
+	.uaword	0xe1f9
+	.uleb128 0x47
+	.byte	0
+	.uleb128 0x48
 	.uaword	.LVL34
-	.uaword	0xe5f7
-	.uaword	0xe1f5
+	.byte	0x2
+	.byte	0x8f
+	.sleb128 0
+	.uaword	0xe212
+	.uleb128 0x3b
+	.byte	0x1
+	.byte	0x65
+	.byte	0x2
+	.byte	0x8e
+	.sleb128 0
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x64
@@ -19729,8 +19768,30 @@ rmii_pins:
 	.byte	0x8c
 	.sleb128 0
 	.byte	0
-	.uleb128 0x46
+	.uleb128 0x3c
 	.uaword	.LVL37
+	.uaword	0xe627
+	.uaword	0xe226
+	.uleb128 0x3b
+	.byte	0x1
+	.byte	0x64
+	.byte	0x2
+	.byte	0x8c
+	.sleb128 0
+	.byte	0
+	.uleb128 0x3c
+	.uaword	.LVL39
+	.uaword	0xe645
+	.uaword	0xe23a
+	.uleb128 0x3b
+	.byte	0x1
+	.byte	0x64
+	.byte	0x2
+	.byte	0x8c
+	.sleb128 0
+	.byte	0
+	.uleb128 0x49
+	.uaword	.LVL41
 	.byte	0x2
 	.byte	0x8f
 	.sleb128 0
@@ -19748,16 +19809,20 @@ rmii_pins:
 	.sleb128 0
 	.byte	0
 	.byte	0
+	.uleb128 0x4a
+	.uaword	.LVL32
+	.uaword	0xe659
+	.byte	0
 	.uleb128 0x4
 	.byte	0x4
 	.uaword	0xdd78
-	.uleb128 0x47
+	.uleb128 0x4b
 	.string	"low_level_init"
 	.byte	0x1
 	.byte	0x6a
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe25c
+	.uaword	0xe2ab
 	.uleb128 0x2a
 	.uaword	.LASF0
 	.byte	0x1
@@ -19785,7 +19850,7 @@ rmii_pins:
 	.byte	0x1
 	.string	"ifx_netif_init"
 	.byte	0x1
-	.uahalf	0x197
+	.uahalf	0x195
 	.byte	0x1
 	.uaword	0x3ad
 	.uaword	.LFB246
@@ -19793,46 +19858,46 @@ rmii_pins:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xe321
+	.uaword	0xe370
 	.uleb128 0x3e
 	.uaword	.LASF0
 	.byte	0x1
-	.uahalf	0x197
+	.uahalf	0x195
 	.uaword	0xdf3c
-	.uaword	.LLST13
-	.uleb128 0x48
+	.uaword	.LLST14
+	.uleb128 0x4c
 	.uaword	.LASF30
 	.byte	0x1
-	.uahalf	0x199
+	.uahalf	0x197
 	.uaword	0xde5c
-	.uleb128 0x49
-	.uaword	0xe211
-	.uaword	.LBB46
-	.uaword	.LBE46
+	.uleb128 0x4d
+	.uaword	0xe260
+	.uaword	.LBB50
+	.uaword	.LBE50
 	.byte	0x1
-	.uahalf	0x1bd
-	.uaword	0xe2f4
+	.uahalf	0x1bb
+	.uaword	0xe343
 	.uleb128 0x41
-	.uaword	0xe229
-	.uaword	.LLST14
-	.uleb128 0x38
-	.uaword	.LBB47
-	.uaword	.LBE47
-	.uleb128 0x4a
-	.uaword	0xe234
-	.uleb128 0x39
-	.uaword	0xe23f
+	.uaword	0xe278
 	.uaword	.LLST15
+	.uleb128 0x38
+	.uaword	.LBB51
+	.uaword	.LBE51
+	.uleb128 0x4e
+	.uaword	0xe283
+	.uleb128 0x39
+	.uaword	0xe28e
+	.uaword	.LLST16
 	.uleb128 0x42
-	.uaword	.Ldebug_ranges0+0x20
+	.uaword	.Ldebug_ranges0+0x40
 	.uleb128 0x43
-	.uaword	0xe249
+	.uaword	0xe298
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -48
 	.uleb128 0x3a
-	.uaword	.LVL46
-	.uaword	0xe615
+	.uaword	.LVL50
+	.uaword	0xe678
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x65
@@ -19844,8 +19909,8 @@ rmii_pins:
 	.byte	0
 	.byte	0
 	.uleb128 0x3a
-	.uaword	.LVL49
-	.uaword	0xe503
+	.uaword	.LVL53
+	.uaword	0xe552
 	.uleb128 0x3b
 	.byte	0x1
 	.byte	0x64
@@ -19865,7 +19930,7 @@ rmii_pins:
 	.sleb128 4
 	.byte	0x3
 	.byte	0xa
-	.uahalf	0x19b
+	.uahalf	0x199
 	.uleb128 0x3b
 	.byte	0x2
 	.byte	0x8a
@@ -19875,113 +19940,113 @@ rmii_pins:
 	.uaword	.LC3
 	.byte	0
 	.byte	0
-	.uleb128 0x4b
+	.uleb128 0x4f
 	.string	"portLED"
 	.byte	0x13
 	.byte	0x2c
-	.uaword	0xe335
+	.uaword	0xe384
 	.sleb128 -268184832
 	.uleb128 0x5
 	.uaword	0xcbf5
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"lwip_stats"
 	.byte	0x9
 	.byte	0x95
 	.uaword	0x5e3
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_CRSDVA_P11_11_IN"
 	.byte	0x10
 	.byte	0x9a
 	.uaword	0xcda4
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_MDC_P21_2_OUT"
 	.byte	0x10
 	.byte	0x9f
 	.uaword	0xcf9f
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_MDIO_P21_1_INOUT"
 	.byte	0x10
 	.byte	0xa3
 	.uaword	0xcffe
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_REFCLK_P11_12_IN"
 	.byte	0x10
 	.byte	0xa4
 	.uaword	0xce35
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_RXD0_P11_10_IN"
 	.byte	0x10
 	.byte	0xa7
 	.uaword	0xcf11
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_RXD1_P11_9_IN"
 	.byte	0x10
 	.byte	0xa8
 	.uaword	0xcf11
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_TXD0_P11_3_OUT"
 	.byte	0x10
 	.byte	0xb1
 	.uaword	0xd049
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_TXD1_P11_2_OUT"
 	.byte	0x10
 	.byte	0xb2
 	.uaword	0xd049
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"IfxEth_TXEN_P11_6_OUT"
 	.byte	0x10
 	.byte	0xb5
 	.uaword	0xd091
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4d
+	.uleb128 0x51
 	.string	"IfxEth_rxDescr"
 	.byte	0x2
 	.uahalf	0x394
 	.uaword	0xda6b
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4d
+	.uleb128 0x51
 	.string	"IfxEth_txDescr"
 	.byte	0x2
 	.uahalf	0x39a
 	.uaword	0xdacf
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"g_Lwip"
 	.byte	0x12
 	.byte	0x63
 	.uaword	0xde14
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4c
+	.uleb128 0x50
 	.string	"g_IfxEth"
 	.byte	0x12
 	.byte	0x64
 	.uaword	0xdd3a
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x4e
+	.uleb128 0x52
 	.string	"rmii_pins"
 	.byte	0x1
 	.byte	0x58
@@ -19990,7 +20055,7 @@ rmii_pins:
 	.byte	0x5
 	.byte	0x3
 	.uaword	rmii_pins
-	.uleb128 0x4f
+	.uleb128 0x53
 	.byte	0x1
 	.string	"IfxEth_getTransmitBuffer"
 	.byte	0x2
@@ -19998,11 +20063,11 @@ rmii_pins:
 	.byte	0x1
 	.uaword	0x2bc
 	.byte	0x1
-	.uaword	0xe503
+	.uaword	0xe552
 	.uleb128 0x10
 	.uaword	0xde5c
 	.byte	0
-	.uleb128 0x50
+	.uleb128 0x54
 	.byte	0x1
 	.string	"Ifx_Lwip_printf"
 	.byte	0x5
@@ -20010,25 +20075,25 @@ rmii_pins:
 	.byte	0x1
 	.uaword	0x382
 	.byte	0x1
-	.uaword	0xe528
+	.uaword	0xe577
 	.uleb128 0x10
 	.uaword	0x2a9
-	.uleb128 0x51
+	.uleb128 0x47
 	.byte	0
-	.uleb128 0x52
+	.uleb128 0x55
 	.byte	0x1
 	.string	"IfxEth_sendTransmitBuffer"
 	.byte	0x2
 	.uahalf	0x25f
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe558
+	.uaword	0xe5a7
 	.uleb128 0x10
 	.uaword	0xde5c
 	.uleb128 0x10
 	.uaword	0x21c
 	.byte	0
-	.uleb128 0x4f
+	.uleb128 0x53
 	.byte	0x1
 	.string	"IfxEth_getReceiveBuffer"
 	.byte	0x2
@@ -20036,22 +20101,22 @@ rmii_pins:
 	.byte	0x1
 	.uaword	0x2bc
 	.byte	0x1
-	.uaword	0xe585
+	.uaword	0xe5d4
 	.uleb128 0x10
 	.uaword	0xde5c
 	.byte	0
-	.uleb128 0x52
+	.uleb128 0x55
 	.byte	0x1
 	.string	"IfxEth_freeReceiveBuffer"
 	.byte	0x2
 	.uahalf	0x256
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe5af
+	.uaword	0xe5fe
 	.uleb128 0x10
 	.uaword	0xde5c
 	.byte	0
-	.uleb128 0x50
+	.uleb128 0x54
 	.byte	0x1
 	.string	"pbuf_alloc"
 	.byte	0x8
@@ -20059,7 +20124,7 @@ rmii_pins:
 	.byte	0x1
 	.uaword	0x4bc
 	.byte	0x1
-	.uaword	0xe5d8
+	.uaword	0xe627
 	.uleb128 0x10
 	.uaword	0x3f5
 	.uleb128 0x10
@@ -20067,19 +20132,7 @@ rmii_pins:
 	.uleb128 0x10
 	.uaword	0x43d
 	.byte	0
-	.uleb128 0x50
-	.byte	0x1
-	.string	"lwip_htons"
-	.byte	0x14
-	.byte	0x63
-	.byte	0x1
-	.uaword	0x368
-	.byte	0x1
-	.uaword	0xe5f7
-	.uleb128 0x10
-	.uaword	0x368
-	.byte	0
-	.uleb128 0x50
+	.uleb128 0x54
 	.byte	0x1
 	.string	"pbuf_free"
 	.byte	0x8
@@ -20087,26 +20140,48 @@ rmii_pins:
 	.byte	0x1
 	.uaword	0x35c
 	.byte	0x1
-	.uaword	0xe615
+	.uaword	0xe645
 	.uleb128 0x10
 	.uaword	0x4bc
 	.byte	0
-	.uleb128 0x52
+	.uleb128 0x46
+	.byte	0x1
+	.uaword	.LASF31
+	.byte	0x1
+	.uahalf	0x168
+	.uaword	0x1c0
+	.byte	0x1
+	.uaword	0xe659
+	.uleb128 0x47
+	.byte	0
+	.uleb128 0x54
+	.byte	0x1
+	.string	"lwip_htons"
+	.byte	0x14
+	.byte	0x63
+	.byte	0x1
+	.uaword	0x368
+	.byte	0x1
+	.uaword	0xe678
+	.uleb128 0x10
+	.uaword	0x368
+	.byte	0
+	.uleb128 0x55
 	.byte	0x1
 	.string	"IfxEth_init"
 	.byte	0x2
 	.uahalf	0x359
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe637
+	.uaword	0xe69a
 	.uleb128 0x10
 	.uaword	0xde5c
 	.uleb128 0x10
-	.uaword	0xe637
+	.uaword	0xe69a
 	.byte	0
 	.uleb128 0x4
 	.byte	0x4
-	.uaword	0xe63d
+	.uaword	0xe6a0
 	.uleb128 0x5
 	.uaword	0xdc0d
 	.byte	0
@@ -21015,15 +21090,50 @@ rmii_pins:
 	.byte	0
 	.byte	0
 	.uleb128 0x45
-	.uleb128 0x4109
-	.byte	0
-	.uleb128 0x11
+	.uleb128 0xb
+	.byte	0x1
+	.uleb128 0x55
+	.uleb128 0x6
 	.uleb128 0x1
-	.uleb128 0x31
 	.uleb128 0x13
 	.byte	0
 	.byte	0
 	.uleb128 0x46
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0xc
+	.uleb128 0x3
+	.uleb128 0xe
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x49
+	.uleb128 0x13
+	.uleb128 0x3c
+	.uleb128 0xc
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x47
+	.uleb128 0x18
+	.byte	0
+	.byte	0
+	.byte	0
+	.uleb128 0x48
+	.uleb128 0x4109
+	.byte	0x1
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x2113
+	.uleb128 0xa
+	.uleb128 0x1
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x49
 	.uleb128 0x4109
 	.byte	0x1
 	.uleb128 0x11
@@ -21032,7 +21142,16 @@ rmii_pins:
 	.uleb128 0xa
 	.byte	0
 	.byte	0
-	.uleb128 0x47
+	.uleb128 0x4a
+	.uleb128 0x4109
+	.byte	0
+	.uleb128 0x11
+	.uleb128 0x1
+	.uleb128 0x31
+	.uleb128 0x13
+	.byte	0
+	.byte	0
+	.uleb128 0x4b
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3
@@ -21049,7 +21168,7 @@ rmii_pins:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x48
+	.uleb128 0x4c
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -21062,7 +21181,7 @@ rmii_pins:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x49
+	.uleb128 0x4d
 	.uleb128 0x1d
 	.byte	0x1
 	.uleb128 0x31
@@ -21079,14 +21198,14 @@ rmii_pins:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x4a
+	.uleb128 0x4e
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x31
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x4b
+	.uleb128 0x4f
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -21101,7 +21220,7 @@ rmii_pins:
 	.uleb128 0xd
 	.byte	0
 	.byte	0
-	.uleb128 0x4c
+	.uleb128 0x50
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -21118,7 +21237,7 @@ rmii_pins:
 	.uleb128 0xc
 	.byte	0
 	.byte	0
-	.uleb128 0x4d
+	.uleb128 0x51
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -21135,7 +21254,7 @@ rmii_pins:
 	.uleb128 0xc
 	.byte	0
 	.byte	0
-	.uleb128 0x4e
+	.uleb128 0x52
 	.uleb128 0x34
 	.byte	0
 	.uleb128 0x3
@@ -21152,7 +21271,7 @@ rmii_pins:
 	.uleb128 0xa
 	.byte	0
 	.byte	0
-	.uleb128 0x4f
+	.uleb128 0x53
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3f
@@ -21173,7 +21292,7 @@ rmii_pins:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x50
+	.uleb128 0x54
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3f
@@ -21194,12 +21313,7 @@ rmii_pins:
 	.uleb128 0x13
 	.byte	0
 	.byte	0
-	.uleb128 0x51
-	.uleb128 0x18
-	.byte	0
-	.byte	0
-	.byte	0
-	.uleb128 0x52
+	.uleb128 0x55
 	.uleb128 0x2e
 	.byte	0x1
 	.uleb128 0x3f
@@ -21325,17 +21439,17 @@ rmii_pins:
 	.uahalf	0x1
 	.byte	0x64
 	.uaword	.LVL23-1-.Ltext0
-	.uaword	.LVL34-.Ltext0
+	.uaword	.LVL35-.Ltext0
 	.uahalf	0x1
 	.byte	0x6e
-	.uaword	.LVL34-.Ltext0
 	.uaword	.LVL35-.Ltext0
+	.uaword	.LVL36-.Ltext0
 	.uahalf	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x64
 	.byte	0x9f
-	.uaword	.LVL35-.Ltext0
+	.uaword	.LVL36-.Ltext0
 	.uaword	.LFE245-.Ltext0
 	.uahalf	0x1
 	.byte	0x6e
@@ -21351,54 +21465,62 @@ rmii_pins:
 	.uaword	.LVL33-.Ltext0
 	.uahalf	0x1
 	.byte	0x6f
-	.uaword	.LVL35-.Ltext0
-	.uaword	.LVL36-.Ltext0
+	.uaword	.LVL38-.Ltext0
+	.uaword	.LVL40-.Ltext0
 	.uahalf	0x1
 	.byte	0x6f
 	.uaword	0
 	.uaword	0
 .LLST8:
+	.uaword	.LVL37-.Ltext0
+	.uaword	.LVL38-.Ltext0
+	.uahalf	0x2
+	.byte	0x30
+	.byte	0x9f
+	.uaword	0
+	.uaword	0
+.LLST9:
 	.uaword	.LVL19-.Ltext0
 	.uaword	.LVL23-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x64
 	.uaword	.LVL23-1-.Ltext0
-	.uaword	.LVL34-.Ltext0
+	.uaword	.LVL35-.Ltext0
 	.uahalf	0x1
 	.byte	0x6e
-	.uaword	.LVL34-.Ltext0
 	.uaword	.LVL35-.Ltext0
+	.uaword	.LVL36-.Ltext0
 	.uahalf	0x4
 	.byte	0xf3
 	.uleb128 0x1
 	.byte	0x64
 	.byte	0x9f
-	.uaword	.LVL35-.Ltext0
+	.uaword	.LVL36-.Ltext0
 	.uaword	.LFE245-.Ltext0
 	.uahalf	0x1
 	.byte	0x6e
 	.uaword	0
 	.uaword	0
-.LLST9:
+.LLST10:
 	.uaword	.LVL24-.Ltext0
 	.uaword	.LVL25-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x62
 	.uaword	.LVL25-1-.Ltext0
-	.uaword	.LVL34-.Ltext0
-	.uahalf	0x1
-	.byte	0x6c
 	.uaword	.LVL35-.Ltext0
-	.uaword	.LVL38-.Ltext0
 	.uahalf	0x1
 	.byte	0x6c
-	.uaword	.LVL38-.Ltext0
+	.uaword	.LVL36-.Ltext0
+	.uaword	.LVL42-.Ltext0
+	.uahalf	0x1
+	.byte	0x6c
+	.uaword	.LVL42-.Ltext0
 	.uaword	.LFE245-.Ltext0
 	.uahalf	0x1
 	.byte	0x62
 	.uaword	0
 	.uaword	0
-.LLST10:
+.LLST11:
 	.uaword	.LVL25-.Ltext0
 	.uaword	.LVL26-.Ltext0
 	.uahalf	0x1
@@ -21413,7 +21535,7 @@ rmii_pins:
 	.byte	0x6f
 	.uaword	0
 	.uaword	0
-.LLST11:
+.LLST12:
 	.uaword	.LVL19-.Ltext0
 	.uaword	.LVL22-.Ltext0
 	.uahalf	0x2
@@ -21434,47 +21556,47 @@ rmii_pins:
 	.byte	0x9f
 	.uaword	0
 	.uaword	0
-.LLST12:
+.LLST13:
 	.uaword	.LVL25-.Ltext0
 	.uaword	.LVL30-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x62
 	.uaword	0
 	.uaword	0
-.LLST13:
-	.uaword	.LVL39-.Ltext0
-	.uaword	.LVL40-.Ltext0
+.LLST14:
+	.uaword	.LVL43-.Ltext0
+	.uaword	.LVL44-.Ltext0
 	.uahalf	0x1
 	.byte	0x64
-	.uaword	.LVL40-.Ltext0
-	.uaword	.LVL47-.Ltext0
+	.uaword	.LVL44-.Ltext0
+	.uaword	.LVL51-.Ltext0
 	.uahalf	0x1
 	.byte	0x6f
-	.uaword	.LVL47-.Ltext0
-	.uaword	.LVL48-.Ltext0
+	.uaword	.LVL51-.Ltext0
+	.uaword	.LVL52-.Ltext0
 	.uahalf	0x1
 	.byte	0x64
-	.uaword	.LVL48-.Ltext0
+	.uaword	.LVL52-.Ltext0
 	.uaword	.LFE246-.Ltext0
 	.uahalf	0x1
 	.byte	0x6f
 	.uaword	0
 	.uaword	0
-.LLST14:
-	.uaword	.LVL41-.Ltext0
-	.uaword	.LVL47-.Ltext0
+.LLST15:
+	.uaword	.LVL45-.Ltext0
+	.uaword	.LVL51-.Ltext0
 	.uahalf	0x1
 	.byte	0x6f
 	.uaword	0
 	.uaword	0
-.LLST15:
-	.uaword	.LVL42-.Ltext0
-	.uaword	.LVL43-.Ltext0
+.LLST16:
+	.uaword	.LVL46-.Ltext0
+	.uaword	.LVL47-.Ltext0
 	.uahalf	0x2
 	.byte	0x30
 	.byte	0x9f
-	.uaword	.LVL43-.Ltext0
-	.uaword	.LVL45-.Ltext0
+	.uaword	.LVL47-.Ltext0
+	.uaword	.LVL49-.Ltext0
 	.uahalf	0x1
 	.byte	0x5f
 	.uaword	0
@@ -21493,18 +21615,26 @@ rmii_pins:
 	.uaword	0
 .section .debug_ranges,"",@progbits
 .Ldebug_ranges0:
-	.uaword	.LBB33-.Ltext0
-	.uaword	.LBE33-.Ltext0
-	.uaword	.LBB40-.Ltext0
-	.uaword	.LBE40-.Ltext0
+	.uaword	.LBB34-.Ltext0
+	.uaword	.LBE34-.Ltext0
+	.uaword	.LBB44-.Ltext0
+	.uaword	.LBE44-.Ltext0
+	.uaword	.LBB45-.Ltext0
+	.uaword	.LBE45-.Ltext0
+	.uaword	0
+	.uaword	0
 	.uaword	.LBB41-.Ltext0
 	.uaword	.LBE41-.Ltext0
+	.uaword	.LBB42-.Ltext0
+	.uaword	.LBE42-.Ltext0
+	.uaword	.LBB43-.Ltext0
+	.uaword	.LBE43-.Ltext0
 	.uaword	0
 	.uaword	0
-	.uaword	.LBB48-.Ltext0
-	.uaword	.LBE48-.Ltext0
-	.uaword	.LBB49-.Ltext0
-	.uaword	.LBE49-.Ltext0
+	.uaword	.LBB52-.Ltext0
+	.uaword	.LBE52-.Ltext0
+	.uaword	.LBB53-.Ltext0
+	.uaword	.LBE53-.Ltext0
 	.uaword	0
 	.uaword	0
 .section .debug_line,"",@progbits
@@ -21572,6 +21702,8 @@ rmii_pins:
 	.string	"module"
 .LASF21:
 	.string	"reserved_14"
+.LASF31:
+	.string	"SOMEIP_input"
 	.extern	IfxEth_TXEN_P11_6_OUT,STT_OBJECT,16
 	.extern	IfxEth_TXD1_P11_2_OUT,STT_OBJECT,16
 	.extern	IfxEth_TXD0_P11_3_OUT,STT_OBJECT,16
@@ -21589,6 +21721,7 @@ rmii_pins:
 	.extern	etharp_output,STT_FUNC,0
 	.extern	g_Lwip,STT_OBJECT,64
 	.extern	g_IfxEth,STT_OBJECT,104
+	.extern	SOMEIP_input,STT_FUNC,0
 	.extern	pbuf_free,STT_FUNC,0
 	.extern	lwip_htons,STT_FUNC,0
 	.extern	IfxEth_freeReceiveBuffer,STT_FUNC,0

@@ -2853,7 +2853,7 @@ tcp_alloc:
 .LBB100:
 .LBB98:
 	.loc 1 1579 0
-	movh.a	%a15, hi:iss.10398
+	movh.a	%a15, hi:iss.10470
 	st.w	[%a2] 40, %d3
 .LBE98:
 .LBE100:
@@ -2898,9 +2898,9 @@ tcp_alloc:
 .LBB99:
 	.loc 1 1579 0
 	mov	%d15, %d3
-	ld.w	%d3, [%a15] lo:iss.10398
+	ld.w	%d3, [%a15] lo:iss.10470
 	add	%d15, %d3
-	st.w	[%a15] lo:iss.10398, %d15
+	st.w	[%a15] lo:iss.10470, %d15
 .LBE99:
 .LBE101:
 	.loc 1 1332 0
@@ -3071,12 +3071,12 @@ tcp_next_iss:
 .LFB272:
 	.loc 1 1576 0
 	.loc 1 1579 0
-	movh.a	%a15, hi:iss.10398
+	movh.a	%a15, hi:iss.10470
 	movh.a	%a2, hi:tcp_ticks
-	ld.w	%d15, [%a15] lo:iss.10398
+	ld.w	%d15, [%a15] lo:iss.10470
 	ld.w	%d2, [%a2] lo:tcp_ticks
 	add	%d2, %d15
-	st.w	[%a15] lo:iss.10398, %d2
+	st.w	[%a15] lo:iss.10470, %d2
 	.loc 1 1581 0
 	ret
 .LFE272:
@@ -3183,9 +3183,9 @@ tcp_connect:
 .LBB111:
 .LBB112:
 	.loc 1 1579 0
-	movh.a	%a2, hi:iss.10398
+	movh.a	%a2, hi:iss.10470
 	movh.a	%a3, hi:tcp_ticks
-	ld.w	%d2, [%a2] lo:iss.10398
+	ld.w	%d2, [%a2] lo:iss.10470
 	ld.w	%d15, [%a3] lo:tcp_ticks
 .LBE112:
 .LBE111:
@@ -3202,7 +3202,7 @@ tcp_connect:
 .LBB116:
 .LBB114:
 	.loc 1 1579 0
-	st.w	[%a2] lo:iss.10398, %d15
+	st.w	[%a2] lo:iss.10470, %d15
 .LBE114:
 .LBE116:
 	.loc 1 744 0
@@ -3358,9 +3358,9 @@ tcp_debug_state_str:
 	.size	tcp_debug_state_str, .-tcp_debug_state_str
 .section .data,"aw",@progbits
 	.align 2
-	.type	iss.10398, @object
-	.size	iss.10398, 4
-iss.10398:
+	.type	iss.10470, @object
+	.size	iss.10470, 4
+iss.10470:
 	.word	6510
 	.local	tcp_timer_ctr
 .section .bss,"aw",@nobits
@@ -12102,7 +12102,7 @@ tcp_state_str:
 	.uaword	0x33a8
 	.byte	0x5
 	.byte	0x3
-	.uaword	iss.10398
+	.uaword	iss.10470
 	.byte	0
 	.byte	0
 	.uleb128 0x3d
@@ -12259,7 +12259,7 @@ tcp_state_str:
 	.uaword	0x33a8
 	.byte	0x5
 	.byte	0x3
-	.uaword	iss.10398
+	.uaword	iss.10470
 	.byte	0
 	.uleb128 0x2b
 	.byte	0x1
@@ -12399,7 +12399,7 @@ tcp_state_str:
 	.uaword	0x33a8
 	.byte	0x5
 	.byte	0x3
-	.uaword	iss.10398
+	.uaword	iss.10470
 	.byte	0
 	.byte	0
 	.uleb128 0x2e

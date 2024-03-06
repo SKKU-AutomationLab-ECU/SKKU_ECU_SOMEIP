@@ -74,11 +74,11 @@ void Core0_free(void)
 	// To do...
 #if SOMEIP_Server_Opt
 
-	if((Test_message_count % 1000) == 0)
-	{
-		TxSOMEIP_Test();
-	}
-	Test_message_count += 1;
+//	if()
+//	{
+//		TxSOMEIP_Test();;
+//	}
+
 
 #endif
 

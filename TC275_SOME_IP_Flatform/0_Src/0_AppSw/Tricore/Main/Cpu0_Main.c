@@ -83,13 +83,13 @@ int core0_main(void)
 	IfxCpu_enableInterrupts();
 
 #if SOMEIP_Opt
-	someip_service_init();
+	Service_Discovery_Init();
 	printf_SysLog("initialize the SOME/IP stack!\r\n");
 #endif
 
 	/** This is UDP Task **/
 #if UDP_Opt
-	//udp_echo_init();
+	udp_echo_init();
 	printf_SysLog("initialize the UDP/IP stack\r\n");
 #endif
 

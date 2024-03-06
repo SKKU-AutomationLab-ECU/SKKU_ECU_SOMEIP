@@ -156,7 +156,7 @@ core0_main:
 .LBE36:
 .LBE35:
 	.loc 1 86 0
-	call	someip_service_init
+	call	Service_Discovery_Init
 .LVL13:
 	.loc 1 87 0
 	movh.a	%a4, hi:.LC6
@@ -404,13 +404,13 @@ g_AppCpu0:
 	.file 22 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 	.file 23 "./0_Src/4_McHal/Tricore/Scu/Std/IfxScuWdt.h"
 	.file 24 "./0_Src/0_AppSw/Tricore/System/Systems/SysCFG_Log.h"
-	.file 25 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/Server_impl/some_service.h"
+	.file 25 "./0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
 	.file 26 "./0_Src/1_SrvSw/SysSe/Bsp/Bsp.h"
 	.file 27 "./0_Src/0_AppSw/Tricore/Application/Application.h"
 	.file 28 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_System/SysCFG_Cores.h"
 .section .debug_info,"",@progbits
 .Ldebug_info0:
-	.uaword	0xe2b0
+	.uaword	0xe2b4
 	.uahalf	0x3
 	.uaword	.Ldebug_abbrev0
 	.byte	0x4
@@ -19350,16 +19350,16 @@ g_AppCpu0:
 	.byte	0
 	.uleb128 0x32
 	.uaword	.LVL15
-	.uaword	0xe26a
+	.uaword	0xe26e
 	.uleb128 0x32
 	.uaword	.LVL16
-	.uaword	0xe279
+	.uaword	0xe27d
 	.uleb128 0x32
 	.uaword	.LVL17
-	.uaword	0xe28a
+	.uaword	0xe28e
 	.uleb128 0x32
 	.uaword	.LVL18
-	.uaword	0xe28a
+	.uaword	0xe28e
 	.byte	0
 	.uleb128 0x35
 	.byte	0x1
@@ -19449,10 +19449,10 @@ g_AppCpu0:
 	.byte	0x8f
 	.uleb128 0x32
 	.uaword	.LVL26
-	.uaword	0xe29b
+	.uaword	0xe29f
 	.uleb128 0x32
 	.uaword	.LVL29
-	.uaword	0xe29b
+	.uaword	0xe29f
 	.byte	0
 	.uleb128 0x3a
 	.string	"portLED"
@@ -19562,11 +19562,11 @@ g_AppCpu0:
 	.uleb128 0x23
 	.uaword	0xdcb5
 	.byte	0
-	.uleb128 0x3f
+	.uleb128 0x42
 	.byte	0x1
-	.string	"someip_service_init"
+	.string	"Service_Discovery_Init"
 	.byte	0x19
-	.byte	0x14
+	.uahalf	0x13b
 	.byte	0x1
 	.byte	0x1
 	.uleb128 0x3f
@@ -19576,7 +19576,7 @@ g_AppCpu0:
 	.byte	0xa2
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x42
+	.uleb128 0x43
 	.byte	0x1
 	.string	"SetMCU"
 	.byte	0x1b
@@ -19591,7 +19591,7 @@ g_AppCpu0:
 	.byte	0x24
 	.byte	0x1
 	.byte	0x1
-	.uleb128 0x42
+	.uleb128 0x43
 	.byte	0x1
 	.string	"IO_getSTM0Tic"
 	.byte	0x1c
@@ -20515,6 +20515,23 @@ g_AppCpu0:
 	.uleb128 0x3a
 	.uleb128 0xb
 	.uleb128 0x3b
+	.uleb128 0x5
+	.uleb128 0x27
+	.uleb128 0xc
+	.uleb128 0x3c
+	.uleb128 0xc
+	.byte	0
+	.byte	0
+	.uleb128 0x43
+	.uleb128 0x2e
+	.byte	0
+	.uleb128 0x3f
+	.uleb128 0xc
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
 	.uleb128 0xb
 	.uleb128 0x27
 	.uleb128 0xc
@@ -20741,7 +20758,7 @@ g_AppCpu0:
 	.extern	Core0_free,STT_FUNC,0
 	.extern	SetMCU,STT_FUNC,0
 	.extern	initTime,STT_FUNC,0
-	.extern	someip_service_init,STT_FUNC,0
+	.extern	Service_Discovery_Init,STT_FUNC,0
 	.extern	Ifx_Lwip_init,STT_FUNC,0
 	.extern	printf_SysLog,STT_FUNC,0
 	.extern	IO_Set_SysLog,STT_FUNC,0

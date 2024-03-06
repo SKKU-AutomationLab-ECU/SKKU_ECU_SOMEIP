@@ -24,7 +24,7 @@
 #define UDP_Opt	 				0
 
 #define SOMEIP_Opt				1
-#define SOMEIP_Server_Opt		1
+#define SOMEIP_Server_Opt		0
 #define SOMEIP_Client_Opt		0
 
 extern uint8 Map_STM_Runn[3][2];

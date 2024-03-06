@@ -25956,12 +25956,16 @@ pRxBuf:
 .section .debug_str,"",@progbits
 .LASF20:
 	.string	"MODNUMBER"
+.LASF18:
+	.string	"reserved_6"
 .LASF35:
 	.string	"printf_SysLog"
 .LASF31:
 	.string	"select"
 .LASF11:
 	.string	"reserved_C"
+.LASF32:
+	.string	"eth_addr"
 .LASF34:
 	.string	"IfxCpu_Irq_installInterruptHandler"
 .LASF0:
@@ -25970,6 +25974,8 @@ pRxBuf:
 	.string	"reserved_11"
 .LASF29:
 	.string	"reserved_12"
+.LASF25:
+	.string	"reserved_14"
 .LASF19:
 	.string	"reserved_16"
 .LASF22:
@@ -26004,8 +26010,6 @@ pRxBuf:
 	.string	"reserved_3"
 .LASF5:
 	.string	"reserved_4"
-.LASF18:
-	.string	"reserved_6"
 .LASF16:
 	.string	"reserved_7"
 .LASF2:
@@ -26014,14 +26018,10 @@ pRxBuf:
 	.string	"reserved_30"
 .LASF4:
 	.string	"reserved_31"
-.LASF32:
-	.string	"eth_addr"
-.LASF30:
-	.string	"module"
 .LASF9:
 	.string	"reserved_4C"
-.LASF25:
-	.string	"reserved_14"
+.LASF30:
+	.string	"module"
 .LASF10:
 	.string	"CERBERUS"
 .LASF33:

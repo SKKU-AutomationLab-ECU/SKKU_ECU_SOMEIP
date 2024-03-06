@@ -1,16 +1,40 @@
-21:17:12 **** Incremental Build of configuration Default for project TC275_SOME_IP_Flatform ****
+23:12:29 **** Incremental Build of configuration Default for project TC275_SOME_IP_Flatform ****
 make all 
 Now the make files are generated !!!
 
 Now Build started !!!
 Compiling 0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c: In function 'SOMEIP_input':
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:49:23: warning: variable 'dst_portNum' set but not used [-Wunused-but-set-variable]
+     u16_t src_portNum,dst_portNum;
+                       ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c: In function 'Rx_someip_sd_handle':
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:103:10: warning: unused variable 'srv_proto' [-Wunused-variable]
+     u8_t srv_proto;
+          ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:102:11: warning: unused variable 'srv_src_port' [-Wunused-variable]
+     u16_t srv_src_port;
+           ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:101:15: warning: unused variable 'srv_src_ip' [-Wunused-variable]
+     ip_addr_t srv_src_ip;
+               ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:98:31: warning: unused variable 'EventGroupEntry' [-Wunused-variable]
+     SOMEIP_SD_EventGroupEntry EventGroupEntry;
+                               ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c: In function 'TxSOMEIP_SD_Subscribe':
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:242:23: warning: passing argument 1 of 'SOMEIP_Header_Set' from incompatible pointer type
+     SOMEIP_Header_Set(&_SomeipHeader,
+                       ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:171:1: note: expected 'struct SOMEIP_Message *' but argument is of type 'struct SOMEIP_Header *'
+ SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
+ ^
 0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c: In function 'TxSOMEIP_Test':
-0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:68:32: warning: passing argument 2 of 'SOMEIP_Payload_Set' from incompatible pointer type
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:322:32: warning: passing argument 2 of 'SOMEIP_Payload_Set' from incompatible pointer type
      SOMEIP_Payload_Set(&TxMsg, &testPayload, (uint32)sizeof(testPayload));
                                 ^
-0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:32:6: note: expected 'uint8 *' but argument is of type 'uint8 (*)[4]'
- void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length)
-      ^
+0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c:201:1: note: expected 'uint8 *' but argument is of type 'uint8 (*)[4]'
+ SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length)
+ ^
  
 Building target: 2_Out/Gnuc/TC275_SOME_IP_Flatform_Tricore.elf
 c:/hightec/toolchains/tricore/v4.9.1.0-infineon-2.0/bin/../lib/gcc/tricore/4.9.4/../../../../tricore/bin/ld.exe: warning: deprecated value 'aurix' for option '--mcpu=', use 'tc161'

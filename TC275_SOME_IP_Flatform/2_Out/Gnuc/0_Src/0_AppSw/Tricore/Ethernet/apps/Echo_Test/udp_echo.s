@@ -68,8 +68,10 @@ udp_echoserver_receive_callback:
 .LC1:
 	.string	"UDP/IP Bind is OK!\r\n"
 .LC2:
-	.string	"ARP add static entry fail!! \r\n"
+	.string	"UDP/IP connect is OK!!\r\n"
 .LC3:
+	.string	"ARP add static entry fail!! \r\n"
+.LC4:
 	.string	"ARP add static entry success!! \r\n"
 .section .text,"ax",@progbits
 	.align 1
@@ -86,76 +88,93 @@ udp_echo_init:
 	mov.aa	%a15, %a2
 .LVL13:
 	.loc 1 106 0
-	jz.a	%a2, .L8
+	jz.a	%a2, .L9
 	.loc 1 110 0
 	mov.aa	%a4, %a2
 	lea	%a5, [%A0] SM:ip_addr_any
-	mov	%d4, 30400
+	mov	%d4, 30490
 	call	udp_bind
 .LVL14:
 	.loc 1 112 0
-	jnz	%d2, .L9
+	jnz	%d2, .L10
 	.loc 1 114 0
 	movh.a	%a4, hi:.LC1
 	lea	%a4, [%a4] lo:.LC1
 	call	printf_SysLog
 .LVL15:
-	.loc 1 117 0
+	.loc 1 115 0
+	mov.aa	%a4, %a15
+	lea	%a5, [%A0] SM:ip_addr_any
+	mov	%d4, 30490
+	call	udp_connect
+.LVL16:
+	.loc 1 116 0
+	jz	%d2, .L14
+.LVL17:
+.L9:
+	.loc 1 129 0
+	movh	%d15, 2049
+	addi	%d15, %d15, -22336
+	.loc 1 134 0
+	lea	%a4, [%SP] 4
+	lea	%a5, [%SP] 10
+	.loc 1 129 0
+	st.w	[%SP] 4, %d15
+	.loc 1 132 0
+	mov	%d15, 72
+	st.b	[%SP] 10, %d15
+	mov	%d15, -80
+	st.b	[%SP] 11, %d15
+	mov	%d15, 45
+	st.b	[%SP] 12, %d15
+	mov	%d15, -125
+	st.b	[%SP] 13, %d15
+	mov	%d15, -105
+	st.b	[%SP] 14, %d15
+	mov	%d15, -86
+	st.b	[%SP] 15, %d15
+	.loc 1 134 0
+	call	etharp_add_static_entry
+.LVL18:
+	.loc 1 136 0
+	jeq	%d2, -4, .L15
+	.loc 1 142 0
+	movh.a	%a4, hi:.LC4
+	lea	%a4, [%a4] lo:.LC4
+	j	printf_SysLog
+.LVL19:
+.L10:
+	.loc 1 125 0
+	mov.aa	%a4, %a15
+	call	udp_remove
+.LVL20:
+	j	.L9
+.LVL21:
+.L14:
+	.loc 1 118 0
+	movh.a	%a4, hi:.LC2
+	lea	%a4, [%a4] lo:.LC2
+	call	printf_SysLog
+.LVL22:
+	.loc 1 120 0
 	movh.a	%a5, hi:udp_echoserver_receive_callback
 	mov.aa	%a4, %a15
 	lea	%a5, [%a5] lo:udp_echoserver_receive_callback
 	mov.a	%a6, 0
 	call	udp_recv
-.LVL16:
-.L8:
-	.loc 1 127 0
-	movh	%d15, 2561
-	addi	%d15, %d15, -22336
-	.loc 1 132 0
-	lea	%a4, [%SP] 4
-	lea	%a5, [%SP] 10
-	.loc 1 127 0
-	st.w	[%SP] 4, %d15
-	.loc 1 130 0
-	mov	%d15, 88
-	st.b	[%SP] 10, %d15
-	mov	%d15, -122
-	st.b	[%SP] 11, %d15
-	mov	%d15, -108
-	st.b	[%SP] 12, %d15
-	mov	%d15, -5
-	st.b	[%SP] 13, %d15
-	mov	%d15, -83
-	st.b	[%SP] 14, %d15
-	mov	%d15, 58
-	st.b	[%SP] 15, %d15
-	.loc 1 132 0
-	call	etharp_add_static_entry
-.LVL17:
-	.loc 1 134 0
-	jeq	%d2, -4, .L15
-	.loc 1 140 0
+.LVL23:
+	j	.L9
+.LVL24:
+.L15:
+	.loc 1 138 0
 	movh.a	%a4, hi:.LC3
 	lea	%a4, [%a4] lo:.LC3
 	j	printf_SysLog
-.LVL18:
-.L9:
-	.loc 1 122 0
-	mov.aa	%a4, %a15
-	call	udp_remove
-.LVL19:
-	j	.L8
-.LVL20:
-.L15:
-	.loc 1 136 0
-	movh.a	%a4, hi:.LC2
-	lea	%a4, [%a4] lo:.LC2
-	j	printf_SysLog
-.LVL21:
+.LVL25:
 .LFE440:
 	.size	udp_echo_init, .-udp_echo_init
 .section .rodata,"a",@progbits
-.LC4:
+.LC5:
 	.string	"UDP/IP pcb has removed !-,,! \r\n"
 .section .text,"ax",@progbits
 	.align 1
@@ -163,43 +182,43 @@ udp_echo_init:
 	.type	udp_echo, @function
 udp_echo:
 .LFB441:
-	.loc 1 145 0
-.LVL22:
-	.loc 1 145 0
+	.loc 1 147 0
+.LVL26:
+	.loc 1 147 0
 	mov.aa	%a12, %a4
-	.loc 1 150 0
-	call	udp_new
-.LVL23:
-	mov.aa	%a15, %a2
-.LVL24:
 	.loc 1 152 0
+	call	udp_new
+.LVL27:
+	mov.aa	%a15, %a2
+.LVL28:
+	.loc 1 154 0
 	jz.a	%a2, .L16
-	.loc 1 158 0
+	.loc 1 160 0
 	mov.aa	%a4, %a2
 	lea	%a5, [%A0] SM:ip_addr_any
 	mov	%d4, 30400
 	call	udp_bind
-.LVL25:
-	.loc 1 160 0
+.LVL29:
+	.loc 1 162 0
 	jz	%d2, .L19
-	.loc 1 169 0
-	movh.a	%a4, hi:.LC4
-	lea	%a4, [%a4] lo:.LC4
+	.loc 1 171 0
+	movh.a	%a4, hi:.LC5
+	lea	%a4, [%a4] lo:.LC5
 	call	printf_SysLog
-.LVL26:
-	.loc 1 170 0
+.LVL30:
+	.loc 1 172 0
 	mov.aa	%a4, %a15
 	j	udp_remove
-.LVL27:
+.LVL31:
 .L19:
-	.loc 1 164 0
+	.loc 1 166 0
 	ld.hu	%d4, [%a15] 18
 	mov.a	%a4, 0
 	mov.aa	%a5, %a15
 	mov.aa	%a6, %a12
 	mov.aa	%a7, %a15
 	j	udp_echoserver_receive_callback
-.LVL28:
+.LVL32:
 .L16:
 	ret
 .LFE441:
@@ -269,7 +288,7 @@ udp_echo:
 	.file 19 "./0_Src/0_AppSw/Tricore/System/Systems/SysCFG_Log.h"
 .section .debug_info,"",@progbits
 .Ldebug_info0:
-	.uaword	0xe1b8
+	.uaword	0xe1f8
 	.uahalf	0x3
 	.uaword	.Ldebug_abbrev0
 	.byte	0x4
@@ -18940,7 +18959,7 @@ udp_echo:
 	.uaword	0x380
 	.uleb128 0x29
 	.uaword	.LVL3
-	.uaword	0xdfe6
+	.uaword	0xe02a
 	.uaword	0xdcfe
 	.uleb128 0x2a
 	.byte	0x1
@@ -18958,7 +18977,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL4
-	.uaword	0xe010
+	.uaword	0xe054
 	.uaword	0xdd18
 	.uleb128 0x2a
 	.byte	0x1
@@ -18975,7 +18994,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL5
-	.uaword	0xe03b
+	.uaword	0xe07f
 	.uaword	0xdd32
 	.uleb128 0x2a
 	.byte	0x1
@@ -18992,7 +19011,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL6
-	.uaword	0xe066
+	.uaword	0xe0aa
 	.uaword	0xdd46
 	.uleb128 0x2a
 	.byte	0x1
@@ -19003,7 +19022,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL7
-	.uaword	0xe08f
+	.uaword	0xe0d3
 	.uaword	0xdd5d
 	.uleb128 0x2a
 	.byte	0x1
@@ -19014,7 +19033,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL8
-	.uaword	0xe0ae
+	.uaword	0xe0f2
 	.uaword	0xdd77
 	.uleb128 0x2a
 	.byte	0x1
@@ -19031,7 +19050,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL9
-	.uaword	0xe0d0
+	.uaword	0xe114
 	.uaword	0xdd8b
 	.uleb128 0x2a
 	.byte	0x1
@@ -19042,7 +19061,7 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL10
-	.uaword	0xe0ef
+	.uaword	0xe133
 	.uaword	0xdd9f
 	.uleb128 0x2a
 	.byte	0x1
@@ -19054,7 +19073,7 @@ udp_echo:
 	.uleb128 0x2b
 	.uaword	.LVL11
 	.byte	0x1
-	.uaword	0xe10d
+	.uaword	0xe151
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x64
@@ -19074,7 +19093,7 @@ udp_echo:
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xded3
+	.uaword	0xdf17
 	.uleb128 0x2c
 	.string	"upcb"
 	.byte	0x1
@@ -19087,10 +19106,16 @@ udp_echo:
 	.byte	0x65
 	.uaword	0x380
 	.uaword	.LLST6
+	.uleb128 0x2c
+	.string	"errVal"
+	.byte	0x1
+	.byte	0x65
+	.uaword	0x380
+	.uaword	.LLST7
 	.uleb128 0x2d
 	.string	"server_ip"
 	.byte	0x1
-	.byte	0x7e
+	.byte	0x80
 	.uaword	0x41f
 	.byte	0x2
 	.byte	0x91
@@ -19098,24 +19123,24 @@ udp_echo:
 	.uleb128 0x2d
 	.string	"server_Eth"
 	.byte	0x1
-	.byte	0x81
+	.byte	0x83
 	.uaword	0xdba9
 	.byte	0x2
 	.byte	0x91
 	.sleb128 -6
 	.uleb128 0x2e
 	.uaword	.LVL12
-	.uaword	0xe128
+	.uaword	0xe16c
 	.uleb128 0x29
 	.uaword	.LVL14
-	.uaword	0xe13a
-	.uaword	0xde3f
+	.uaword	0xe17e
+	.uaword	0xde51
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x54
 	.byte	0x3
 	.byte	0xa
-	.uahalf	0x76c0
+	.uahalf	0x771a
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x64
@@ -19125,8 +19150,8 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL15
-	.uaword	0xe08f
-	.uaword	0xde56
+	.uaword	0xe0d3
+	.uaword	0xde68
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x64
@@ -19136,8 +19161,76 @@ udp_echo:
 	.byte	0
 	.uleb128 0x29
 	.uaword	.LVL16
-	.uaword	0xe161
-	.uaword	0xde78
+	.uaword	0xe02a
+	.uaword	0xde83
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x54
+	.byte	0x3
+	.byte	0xa
+	.uahalf	0x771a
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x64
+	.byte	0x2
+	.byte	0x8f
+	.sleb128 0
+	.byte	0
+	.uleb128 0x29
+	.uaword	.LVL18
+	.uaword	0xe1a5
+	.uaword	0xde9d
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x65
+	.byte	0x2
+	.byte	0x91
+	.sleb128 -6
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x64
+	.byte	0x2
+	.byte	0x91
+	.sleb128 -12
+	.byte	0
+	.uleb128 0x2f
+	.uaword	.LVL19
+	.byte	0x1
+	.uaword	0xe0d3
+	.uaword	0xdeb5
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x64
+	.byte	0x5
+	.byte	0x3
+	.uaword	.LC4
+	.byte	0
+	.uleb128 0x29
+	.uaword	.LVL20
+	.uaword	0xe151
+	.uaword	0xdec9
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x64
+	.byte	0x2
+	.byte	0x8f
+	.sleb128 0
+	.byte	0
+	.uleb128 0x29
+	.uaword	.LVL22
+	.uaword	0xe0d3
+	.uaword	0xdee0
+	.uleb128 0x2a
+	.byte	0x1
+	.byte	0x64
+	.byte	0x5
+	.byte	0x3
+	.uaword	.LC2
+	.byte	0
+	.uleb128 0x29
+	.uaword	.LVL23
+	.uaword	0xe1dc
+	.uaword	0xdf02
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x66
@@ -19156,28 +19249,10 @@ udp_echo:
 	.byte	0x8f
 	.sleb128 0
 	.byte	0
-	.uleb128 0x29
-	.uaword	.LVL17
-	.uaword	0xe184
-	.uaword	0xde92
-	.uleb128 0x2a
+	.uleb128 0x2b
+	.uaword	.LVL25
 	.byte	0x1
-	.byte	0x65
-	.byte	0x2
-	.byte	0x91
-	.sleb128 -6
-	.uleb128 0x2a
-	.byte	0x1
-	.byte	0x64
-	.byte	0x2
-	.byte	0x91
-	.sleb128 -12
-	.byte	0
-	.uleb128 0x2f
-	.uaword	.LVL18
-	.byte	0x1
-	.uaword	0xe08f
-	.uaword	0xdeaa
+	.uaword	0xe0d3
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x64
@@ -19185,66 +19260,44 @@ udp_echo:
 	.byte	0x3
 	.uaword	.LC3
 	.byte	0
-	.uleb128 0x29
-	.uaword	.LVL19
-	.uaword	0xe10d
-	.uaword	0xdebe
-	.uleb128 0x2a
-	.byte	0x1
-	.byte	0x64
-	.byte	0x2
-	.byte	0x8f
-	.sleb128 0
-	.byte	0
-	.uleb128 0x2b
-	.uaword	.LVL21
-	.byte	0x1
-	.uaword	0xe08f
-	.uleb128 0x2a
-	.byte	0x1
-	.byte	0x64
-	.byte	0x5
-	.byte	0x3
-	.uaword	.LC2
-	.byte	0
 	.byte	0
 	.uleb128 0x26
 	.byte	0x1
 	.string	"udp_echo"
 	.byte	0x1
-	.byte	0x90
+	.byte	0x92
 	.byte	0x1
 	.uaword	.LFB441
 	.uaword	.LFE441
 	.byte	0x1
 	.byte	0x9c
 	.byte	0x1
-	.uaword	0xdf96
+	.uaword	0xdfda
 	.uleb128 0x27
 	.string	"rec_pbuf"
 	.byte	0x1
-	.byte	0x90
+	.byte	0x92
 	.uaword	0x3fb
-	.uaword	.LLST7
+	.uaword	.LLST8
 	.uleb128 0x2c
 	.string	"upcb"
 	.byte	0x1
-	.byte	0x92
+	.byte	0x94
 	.uaword	0x618
-	.uaword	.LLST8
+	.uaword	.LLST9
 	.uleb128 0x2c
 	.string	"err"
 	.byte	0x1
-	.byte	0x93
+	.byte	0x95
 	.uaword	0x380
-	.uaword	.LLST9
+	.uaword	.LLST10
 	.uleb128 0x2e
-	.uaword	.LVL23
-	.uaword	0xe128
+	.uaword	.LVL27
+	.uaword	0xe16c
 	.uleb128 0x29
-	.uaword	.LVL25
-	.uaword	0xe13a
-	.uaword	0xdf47
+	.uaword	.LVL29
+	.uaword	0xe17e
+	.uaword	0xdf8b
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x54
@@ -19259,21 +19312,21 @@ udp_echo:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x29
-	.uaword	.LVL26
-	.uaword	0xe08f
-	.uaword	0xdf5e
+	.uaword	.LVL30
+	.uaword	0xe0d3
+	.uaword	0xdfa2
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x64
 	.byte	0x5
 	.byte	0x3
-	.uaword	.LC4
+	.uaword	.LC5
 	.byte	0
 	.uleb128 0x2f
-	.uaword	.LVL27
+	.uaword	.LVL31
 	.byte	0x1
-	.uaword	0xe10d
-	.uaword	0xdf73
+	.uaword	0xe151
+	.uaword	0xdfb7
 	.uleb128 0x2a
 	.byte	0x1
 	.byte	0x64
@@ -19282,7 +19335,7 @@ udp_echo:
 	.sleb128 0
 	.byte	0
 	.uleb128 0x2b
-	.uaword	.LVL28
+	.uaword	.LVL32
 	.byte	0x1
 	.uaword	0xdc58
 	.uleb128 0x2a
@@ -19314,7 +19367,7 @@ udp_echo:
 	.string	"portLED"
 	.byte	0x12
 	.byte	0x2c
-	.uaword	0xdfaa
+	.uaword	0xdfee
 	.sleb128 -268184832
 	.uleb128 0xc
 	.uaword	0x2a2a
@@ -19347,7 +19400,7 @@ udp_echo:
 	.byte	0x1
 	.uaword	0x380
 	.byte	0x1
-	.uaword	0xe010
+	.uaword	0xe054
 	.uleb128 0xb
 	.uaword	0x618
 	.uleb128 0xb
@@ -19362,7 +19415,7 @@ udp_echo:
 	.byte	0x54
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe03b
+	.uaword	0xe07f
 	.uleb128 0xb
 	.uaword	0x618
 	.uleb128 0xb
@@ -19375,7 +19428,7 @@ udp_echo:
 	.byte	0x55
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe066
+	.uaword	0xe0aa
 	.uleb128 0xb
 	.uaword	0x618
 	.uleb128 0xb
@@ -19388,7 +19441,7 @@ udp_echo:
 	.byte	0x5b
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe08f
+	.uaword	0xe0d3
 	.uleb128 0xb
 	.uaword	0x3fb
 	.byte	0
@@ -19399,7 +19452,7 @@ udp_echo:
 	.byte	0x13
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe0ae
+	.uaword	0xe0f2
 	.uleb128 0xb
 	.uaword	0x2b5f
 	.uleb128 0x34
@@ -19412,7 +19465,7 @@ udp_echo:
 	.byte	0x1
 	.uaword	0x380
 	.byte	0x1
-	.uaword	0xe0d0
+	.uaword	0xe114
 	.uleb128 0xb
 	.uaword	0x618
 	.uleb128 0xb
@@ -19425,7 +19478,7 @@ udp_echo:
 	.byte	0x81
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe0ef
+	.uaword	0xe133
 	.uleb128 0xb
 	.uaword	0x618
 	.byte	0
@@ -19437,7 +19490,7 @@ udp_echo:
 	.byte	0x1
 	.uaword	0x342
 	.byte	0x1
-	.uaword	0xe10d
+	.uaword	0xe151
 	.uleb128 0xb
 	.uaword	0x3fb
 	.byte	0
@@ -19448,7 +19501,7 @@ udp_echo:
 	.byte	0x7c
 	.byte	0x1
 	.byte	0x1
-	.uaword	0xe128
+	.uaword	0xe16c
 	.uleb128 0xb
 	.uaword	0x618
 	.byte	0
@@ -19468,28 +19521,13 @@ udp_echo:
 	.byte	0x1
 	.uaword	0x380
 	.byte	0x1
-	.uaword	0xe161
+	.uaword	0xe1a5
 	.uleb128 0xb
 	.uaword	0x618
 	.uleb128 0xb
 	.uaword	0x5b9
 	.uleb128 0xb
 	.uaword	0x34e
-	.byte	0
-	.uleb128 0x33
-	.byte	0x1
-	.string	"udp_recv"
-	.byte	0x9
-	.byte	0x82
-	.byte	0x1
-	.byte	0x1
-	.uaword	0xe184
-	.uleb128 0xb
-	.uaword	0x618
-	.uleb128 0xb
-	.uaword	0x5df
-	.uleb128 0xb
-	.uaword	0x2a2
 	.byte	0
 	.uleb128 0x32
 	.byte	0x1
@@ -19499,15 +19537,29 @@ udp_echo:
 	.byte	0x1
 	.uaword	0x380
 	.byte	0x1
-	.uaword	0xe1b5
+	.uaword	0xe1d6
 	.uleb128 0xb
 	.uaword	0x5b9
 	.uleb128 0xb
-	.uaword	0xe1b5
+	.uaword	0xe1d6
 	.byte	0
 	.uleb128 0x9
 	.byte	0x4
 	.uaword	0x2b65
+	.uleb128 0x36
+	.byte	0x1
+	.string	"udp_recv"
+	.byte	0x9
+	.byte	0x82
+	.byte	0x1
+	.byte	0x1
+	.uleb128 0xb
+	.uaword	0x618
+	.uleb128 0xb
+	.uaword	0x5df
+	.uleb128 0xb
+	.uaword	0x2a2
+	.byte	0
 	.byte	0
 .section .debug_abbrev,"",@progbits
 .Ldebug_abbrev0:
@@ -20224,6 +20276,23 @@ udp_echo:
 	.uleb128 0xc
 	.byte	0
 	.byte	0
+	.uleb128 0x36
+	.uleb128 0x2e
+	.byte	0x1
+	.uleb128 0x3f
+	.uleb128 0xc
+	.uleb128 0x3
+	.uleb128 0x8
+	.uleb128 0x3a
+	.uleb128 0xb
+	.uleb128 0x3b
+	.uleb128 0xb
+	.uleb128 0x27
+	.uleb128 0xc
+	.uleb128 0x3c
+	.uleb128 0xc
+	.byte	0
+	.byte	0
 	.byte	0
 .section .debug_loc,"",@progbits
 .Ldebug_loc0:
@@ -20311,53 +20380,64 @@ udp_echo:
 	.uaword	.LVL15-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
-	.uaword	.LVL17-.Ltext0
-	.uaword	.LVL18-1-.Ltext0
-	.uahalf	0x1
-	.byte	0x52
 	.uaword	.LVL18-.Ltext0
 	.uaword	.LVL19-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
-	.uaword	.LVL20-.Ltext0
-	.uaword	.LVL21-1-.Ltext0
+	.uaword	.LVL19-.Ltext0
+	.uaword	.LVL20-1-.Ltext0
+	.uahalf	0x1
+	.byte	0x52
+	.uaword	.LVL24-.Ltext0
+	.uaword	.LVL25-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
 	.uaword	0
 	.uaword	0
 .LLST7:
-	.uaword	.LVL22-.Ltext0
-	.uaword	.LVL23-1-.Ltext0
+	.uaword	.LVL16-.Ltext0
+	.uaword	.LVL17-.Ltext0
+	.uahalf	0x1
+	.byte	0x52
+	.uaword	.LVL21-.Ltext0
+	.uaword	.LVL22-1-.Ltext0
+	.uahalf	0x1
+	.byte	0x52
+	.uaword	0
+	.uaword	0
+.LLST8:
+	.uaword	.LVL26-.Ltext0
+	.uaword	.LVL27-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x64
-	.uaword	.LVL23-1-.Ltext0
+	.uaword	.LVL27-1-.Ltext0
 	.uaword	.LFE441-.Ltext0
 	.uahalf	0x1
 	.byte	0x6c
 	.uaword	0
 	.uaword	0
-.LLST8:
-	.uaword	.LVL24-.Ltext0
-	.uaword	.LVL25-1-.Ltext0
+.LLST9:
+	.uaword	.LVL28-.Ltext0
+	.uaword	.LVL29-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x62
-	.uaword	.LVL25-1-.Ltext0
-	.uaword	.LVL28-.Ltext0
+	.uaword	.LVL29-1-.Ltext0
+	.uaword	.LVL32-.Ltext0
 	.uahalf	0x1
 	.byte	0x6f
-	.uaword	.LVL28-.Ltext0
+	.uaword	.LVL32-.Ltext0
 	.uaword	.LFE441-.Ltext0
 	.uahalf	0x1
 	.byte	0x62
 	.uaword	0
 	.uaword	0
-.LLST9:
-	.uaword	.LVL25-.Ltext0
-	.uaword	.LVL26-1-.Ltext0
+.LLST10:
+	.uaword	.LVL29-.Ltext0
+	.uaword	.LVL30-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
-	.uaword	.LVL27-.Ltext0
-	.uaword	.LVL28-1-.Ltext0
+	.uaword	.LVL31-.Ltext0
+	.uaword	.LVL32-1-.Ltext0
 	.uahalf	0x1
 	.byte	0x52
 	.uaword	0
@@ -20435,8 +20515,8 @@ udp_echo:
 	.string	"module"
 .LASF24:
 	.string	"reserved_14"
-	.extern	etharp_add_static_entry,STT_FUNC,0
 	.extern	udp_recv,STT_FUNC,0
+	.extern	etharp_add_static_entry,STT_FUNC,0
 	.extern	udp_bind,STT_FUNC,0
 	.extern	ip_addr_any,STT_OBJECT,4
 	.extern	udp_new,STT_FUNC,0

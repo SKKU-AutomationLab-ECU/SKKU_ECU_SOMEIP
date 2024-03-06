@@ -557,10 +557,10 @@ IO_Send_CAN:
 	.loc 1 251 0
 .LVL22:
 	mov.a	%a2, %d5
-	movh.a	%a7, hi:buffer.14021
+	movh.a	%a7, hi:buffer.14093
 	.loc 1 259 0
 	mov	%d15, 0
-	lea	%a15, [%a7] lo:buffer.14021
+	lea	%a15, [%a7] lo:buffer.14093
 	add.a	%a2, -1
 	jz	%d5, .L33
 .LVL23:
@@ -580,7 +580,7 @@ IO_Send_CAN:
 	sh	%d15, %d4, 5
 	mov.a	%a2, %d15
 	.loc 1 269 0
-	ld.bu	%d2, [%a7] lo:buffer.14021
+	ld.bu	%d2, [%a7] lo:buffer.14093
 	.loc 1 262 0
 	lea	%a4, [%a2] -28672
 .LVL26:
@@ -1790,12 +1790,12 @@ Get_CAN_RxBuffer:
 	ret
 .LFE348:
 	.size	Get_CAN_RxBuffer, .-Get_CAN_RxBuffer
-	.local	buffer.14021
+	.local	buffer.14093
 .section .bss,"aw",@nobits
 	.align 0
-	.type		 buffer.14021,@object
-	.size		 buffer.14021,64
-buffer.14021:
+	.type		 buffer.14093,@object
+	.size		 buffer.14093,64
+buffer.14093:
 	.space	64
 	.local	LDO
 	.align 0
@@ -15948,7 +15948,7 @@ pCAN:
 	.uaword	0x8e28
 	.byte	0x5
 	.byte	0x3
-	.uaword	buffer.14021
+	.uaword	buffer.14093
 	.uleb128 0x33
 	.string	"i"
 	.byte	0x1

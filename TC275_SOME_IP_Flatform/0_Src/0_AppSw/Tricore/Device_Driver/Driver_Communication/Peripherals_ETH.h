@@ -456,5 +456,162 @@ typedef struct _ethFrameStr_ARP{
 
 } ethFrameStr_ARP;
 
+typedef struct _ethFrameStr_SOMEIP{
+
+    ///////////////////////////////////////////////////////////////////
+    /** Support Data-link Layer (OSI-2nd-Layer) (Ethernet II Frame) **/
+    ///////////////////////////////////////////////////////////////////
+
+    uint8                 dstMAC[ETH_HEAD_SIZE_6B];   // Destination MAC Address (6bytes)
+    uint8                 srcMAC[ETH_HEAD_SIZE_6B];   // Source MAC Address (6bytes)
+
+#if ETH_VLAN_MODE           // If we use VLAN Security Mode in the data-link layer, this area is enabled.
+    uint8                 VLANType[ETH_HEAD_SIZE_2B]; // VLAN Type: 0x8100 (2bytes)
+
+    uint8                 IDH : 4;                    // VLAN Tag ID High
+    uint8                 DEI : 1;                    // VLAN Tag DEI
+    uint8                 PRI : 3;                    // VLAN Tag Priority
+    uint8                 IDL : 8;                    // VLAN Tag ID Low
+#endif
+
+    uint8                 ethType[ETH_HEAD_SIZE_2B];  // EtherType (2bytes)
+
+    ///////////////////////////////////////////////////////////////////////////
+    /** Support Network Layer (OSI-3rd-Layer) (Internet Protocol Version 4) **/
+    ///////////////////////////////////////////////////////////////////////////
+
+    uint8                 IHL : 4;                    // Internet Protocol Header Length (Unit: Word)
+    uint8                 IPV : 4;                    // Internet Protocol Version (4 or 6)
+    uint8                 ECN : 2;                    // Explicit Congestion Notification
+    uint8                 DSCP : 6;                   // Differentiated Services Code Point
+
+    uint8                 TotalLen[ETH_HEAD_SIZE_2B]; // Total Packet Size (Unit: Byte)
+    uint8                 GroupID[ETH_HEAD_SIZE_2B];  // Fragmentation Group Identification
+    uint8                 fragInfo[ETH_HEAD_SIZE_2B]; // Flags and Fragment Offset
+    uint8                 TTL;                        // Time-to-Live of Packet (Prevent routing-loop)
+    uint8                 Protocol;                   // Upper Layer Protocol Type (Example: ICMP[0x01] / IGMP[0x02] / TCP[0x06] / UDP[0x11])
+    uint8                 ICS[ETH_HEAD_SIZE_2B];      // IP Header Checksum Value
+
+    uint8                 srcIP[ETH_HEAD_SIZE_4B];    // Source IP Address (4bytes)
+    uint8                 dstIP[ETH_HEAD_SIZE_4B];    // Destination IP Address (4bytes)
+
+    ///////////////////////////////////////////////////////////
+    /** UDP[User Datagram Protocol] Section (OSI-4th-Layer) **/
+    ///////////////////////////////////////////////////////////
+
+    uint8                 srcPN[ETH_HEAD_SIZE_2B];        // UDP Source Port Number (= Sender's Application Service Number)               (2bytes)
+    uint8                 dstPN[ETH_HEAD_SIZE_2B];        // UDP Destination Port Number (= Receiver's Application Service Number)        (2bytes)
+
+    uint8                 UDPLen[ETH_HEAD_SIZE_2B];       // "UDP Header + UDP Data Stream" Total Size                                    (2bytes)
+    uint8                 UCS[ETH_HEAD_SIZE_2B];          // UDP Header, Payload Checksum Value (Optional in IPv4)                        (2bytes)
+
+    /////////////////////////////////////////////////////////////////////
+    /** SOME/IP[Scalable service-Oriented MiddlewarE over IP] Section **/
+    /////////////////////////////////////////////////////////////////////
+
+    uint8                 serviceID[ETH_HEAD_SIZE_2B];    // SOME/IP Service ID (distinguish up to 2^16 services)
+    uint8                 methodID[ETH_HEAD_SIZE_2B];     // SOME/IP Method ID (distinguish up to 2^16 service elements)
+
+    uint8                 length[ETH_HEAD_SIZE_4B];       // SOME/IP Length covered from Request/Client ID until the end of the SOME/IP message
+
+    uint8                 clientPref;                     // SOME/IP Configurable Client Prefix
+    uint8                 clientID;                       // SOME/IP Unique Client Identifier
+    uint8                 sessionID[ETH_HEAD_SIZE_2B];    // SOME/IP Unique Sequential Message Identifier
+
+    uint8                 someipVer;                      // SOME/IP Header Format Version (Not Upper Layer Protocol Version)
+    uint8                 ifaceVer;                       // SOME/IP Service Interface Version
+    uint8                 msgType;                        // SOME/IP Message Type
+    uint8                 returncode;                     // SOME/IP Response Return Code
+
+    ////////////////////
+    /** Data Section **/
+    ////////////////////
+
+    uint8                 payload[ETH_MTU_SIZE - ETH_IP_HEAD_SIZE - ETH_UDP_HEAD_SIZE - ETH_SOMEIP_HEAD_SIZE]; // Total 1,456bytes
+
+} ethFrameStr_SOMEIP;
+
+typedef struct _ethFrameStr_SD{
+
+    ///////////////////////////////////////////////////////////////////
+    /** Support Data-link Layer (OSI-2nd-Layer) (Ethernet II Frame) **/
+    ///////////////////////////////////////////////////////////////////
+
+    uint8                 dstMAC[ETH_HEAD_SIZE_6B];   // Destination MAC Address (6bytes)
+    uint8                 srcMAC[ETH_HEAD_SIZE_6B];   // Source MAC Address (6bytes)
+
+#if ETH_VLAN_MODE           // If we use VLAN Security Mode in the data-link layer, this area is enabled.
+    uint8                 VLANType[ETH_HEAD_SIZE_2B]; // VLAN Type: 0x8100 (2bytes)
+
+    uint8                 IDH : 4;                    // VLAN Tag ID High
+    uint8                 DEI : 1;                    // VLAN Tag DEI
+    uint8                 PRI : 3;                    // VLAN Tag Priority
+    uint8                 IDL : 8;                    // VLAN Tag ID Low
+#endif
+
+    uint8                 ethType[ETH_HEAD_SIZE_2B];  // EtherType (2bytes)
+
+    ///////////////////////////////////////////////////////////////////////////
+    /** Support Network Layer (OSI-3rd-Layer) (Internet Protocol Version 4) **/
+    ///////////////////////////////////////////////////////////////////////////
+
+    uint8                 IHL : 4;                    // Internet Protocol Header Length (Unit: Word)
+    uint8                 IPV : 4;                    // Internet Protocol Version (4 or 6)
+    uint8                 ECN : 2;                    // Explicit Congestion Notification
+    uint8                 DSCP : 6;                   // Differentiated Services Code Point
+
+    uint8                 TotalLen[ETH_HEAD_SIZE_2B]; // Total Packet Size (Unit: Byte)
+    uint8                 GroupID[ETH_HEAD_SIZE_2B];  // Fragmentation Group Identification
+    uint8                 fragInfo[ETH_HEAD_SIZE_2B]; // Flags and Fragment Offset
+    uint8                 TTL;                        // Time-to-Live of Packet (Prevent routing-loop)
+    uint8                 Protocol;                   // Upper Layer Protocol Type (Example: ICMP[0x01] / IGMP[0x02] / TCP[0x06] / UDP[0x11])
+    uint8                 ICS[ETH_HEAD_SIZE_2B];      // IP Header Checksum Value
+
+    uint8                 srcIP[ETH_HEAD_SIZE_4B];    // Source IP Address (4bytes)
+    uint8                 dstIP[ETH_HEAD_SIZE_4B];    // Destination IP Address (4bytes)
+
+    ///////////////////////////////////////////////////////////
+    /** UDP[User Datagram Protocol] Section (OSI-4th-Layer) **/
+    ///////////////////////////////////////////////////////////
+
+    uint8                 srcPN[ETH_HEAD_SIZE_2B];        // UDP Source Port Number (= Sender's Application Service Number)               (2bytes)
+    uint8                 dstPN[ETH_HEAD_SIZE_2B];        // UDP Destination Port Number (= Receiver's Application Service Number)        (2bytes)
+
+    uint8                 UDPLen[ETH_HEAD_SIZE_2B];       // "UDP Header + UDP Data Stream" Total Size                                    (2bytes)
+    uint8                 UCS[ETH_HEAD_SIZE_2B];          // UDP Header, Payload Checksum Value (Optional in IPv4)                        (2bytes)
+
+    /////////////////////////////////////////////////////////////////////
+    /** SOME/IP[Scalable service-Oriented MiddlewarE over IP] Section **/
+    /////////////////////////////////////////////////////////////////////
+
+    uint8                 serviceID[ETH_HEAD_SIZE_2B];    // SOME/IP Service ID (distinguish up to 2^16 services)
+    uint8                 methodID[ETH_HEAD_SIZE_2B];     // SOME/IP Method ID (distinguish up to 2^16 service elements)
+
+    uint8                 length[ETH_HEAD_SIZE_4B];       // SOME/IP Length covered from Request/Client ID until the end of the SOME/IP message
+
+    uint8                 clientPref;                     // SOME/IP Configurable Client Prefix
+    uint8                 clientID;                       // SOME/IP Unique Client Identifier
+    uint8                 sessionID[ETH_HEAD_SIZE_2B];    // SOME/IP Unique Sequential Message Identifier
+
+    uint8                 someipVer;                      // SOME/IP Header Format Version (Not Upper Layer Protocol Version)
+    uint8                 ifaceVer;                       // SOME/IP Service Interface Version
+    uint8                 msgType;                        // SOME/IP Message Type
+    uint8                 returncode;                     // SOME/IP Response Return Code
+
+    ///////////////////////////////////////////////////////////////////////////////
+    /// SOME/IP[Scalable service-Oriented MiddlewarE over IP] Service Discovery ///
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /* SOME/IP Service Discovery Flags (Reboot Flag / Unicast Flag) */
+    uint8                             : 6;                        // SD Flag Reserved Area
+    uint8                 UnicastFlag : 1;
+    uint8                 RebootFlag  : 1;
+
+    uint8                 SDReserved[ETH_HEAD_SIZE_3B];           // SOME/IP Service Discovery Reserved Area (24bits)
+    uint8                 EntryArrayLength[ETH_HEAD_SIZE_4B];     // SOME/IP Service Discovery Entries Array Length (Unit: Byte)
+
+    uint8                 payload[ETH_MTU_SIZE - ETH_IP_HEAD_SIZE - ETH_UDP_HEAD_SIZE - ETH_SOMEIP_HEAD_SIZE - ETH_SD_HEAD_SIZE]; // Total 1,456bytes
+
+} ethFrameStr_SD;
 
 #endif /* PERIPHERALS_ETH_H_ */

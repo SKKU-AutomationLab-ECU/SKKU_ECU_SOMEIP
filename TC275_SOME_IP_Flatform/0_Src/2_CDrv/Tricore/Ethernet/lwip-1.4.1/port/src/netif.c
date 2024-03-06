@@ -330,14 +330,13 @@ static pbuf_t *low_level_input(netif_t *netif)
 err_t ifx_netif_input(netif_t *netif)
 {
     //IfxEth *ethernetif = netif->state;
-    // eth hdr : srcMAC, desMAC, Type 占쏙옙占쏙옙 占쏙옙占쏙옙
+    // eth hdr : srcMAC, desMAC, Type 
 	eth_hdr_t *ethhdr;
     pbuf_t    *p;
 
 
     /* move received packet into a new pbuf */
     p = low_level_input(netif);
-    // p 占쏙옙占쌜울옙 占쏙옙占쏙옙홱占�.
 
     /* no packet could be read, silently ignore this */
     if (p == NULL)
@@ -347,7 +346,6 @@ err_t ifx_netif_input(netif_t *netif)
     }
 
     ethhdr = p->payload;
-    // 2024-02-01, 16:07 : 占쏙옙占쏙옙, 占싹댐옙 占쏙옙占쏙옙占쏙옙占쏙옙占� 占싫댐옙.
 
     switch (htons(ethhdr->type))
     {
@@ -358,8 +356,8 @@ err_t ifx_netif_input(netif_t *netif)
 			udp_echo(p);
 			printf_SysLog("UDP echo has succeed !!\r\n\n");
 			#endif
-            #if SOMEIP_Client_Opt
-
+            #if SOMEIP_Opt
+			SOMEIP_input(p);
             #endif
 		case ETHTYPE_ARP:
 	        //ethernet_input(netif, p);

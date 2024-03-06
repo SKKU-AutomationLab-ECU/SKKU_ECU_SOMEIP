@@ -13842,6 +13842,146 @@ typedef struct _ethFrameStr_ARP{
     uint8 targetIP[4];
 
 } ethFrameStr_ARP;
+
+typedef struct _ethFrameStr_SOMEIP{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 477 "0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+    uint8 payload[1500 - 20 - 8 - 16];
+
+} ethFrameStr_SOMEIP;
+
+typedef struct _ethFrameStr_SD{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 552 "0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+
+    uint8 : 6;
+    uint8 UnicastFlag : 1;
+    uint8 RebootFlag : 1;
+
+    uint8 SDReserved[3];
+    uint8 EntryArrayLength[4];
+
+    uint8 payload[1500 - 20 - 8 - 16 - 8];
+
+} ethFrameStr_SD;
 # 16 "0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.c" 2
 # 1 "0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_CAN.h" 1
 # 15 "0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_CAN.h"

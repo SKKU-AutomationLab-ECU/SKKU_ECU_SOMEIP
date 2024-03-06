@@ -7971,6 +7971,167 @@ uint32 swap_uint32(uint32 val);
 
 
 
+# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/def.h" 1
+# 99 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/def.h"
+u16_t lwip_htons(u16_t x);
+u16_t lwip_ntohs(u16_t x);
+u32_t lwip_htonl(u32_t x);
+u32_t lwip_ntohl(u32_t x);
+# 22 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/pbuf.h" 1
+# 23 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+
+
+# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h" 1
+# 41 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h" 1
+# 44 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
+struct ip_addr {
+  u32_t addr;
+};
+
+
+
+
+
+
+
+struct ip_addr_packed {
+  u32_t addr;
+} __attribute__ ((__packed__));
+
+
+
+
+
+
+
+typedef struct ip_addr ip_addr_t;
+typedef struct ip_addr_packed ip_addr_p_t;
+# 74 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
+
+struct ip_addr2 {
+  u16_t addrw[2];
+} __attribute__ ((__packed__));
+
+
+
+
+
+
+struct netif;
+
+extern const ip_addr_t ip_addr_any;
+extern const ip_addr_t ip_addr_broadcast;
+# 203 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
+u8_t ip4_addr_isbroadcast(u32_t addr, const struct netif *netif);
+
+
+u8_t ip4_addr_netmask_valid(u32_t netmask);
+# 234 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
+u32_t ipaddr_addr(const char *cp);
+int ipaddr_aton(const char *cp, ip_addr_t *addr);
+
+char *ipaddr_ntoa(const ip_addr_t *addr);
+char *ipaddr_ntoa_r(const ip_addr_t *addr, char *buf, int buflen);
+# 42 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h" 2
+# 102 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+typedef err_t (*netif_init_fn)(struct netif *netif);
+
+
+
+
+
+
+typedef err_t (*netif_input_fn)(struct pbuf *p, struct netif *inp);
+# 118 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+typedef err_t (*netif_output_fn)(struct netif *netif, struct pbuf *p,
+       const ip_addr_t *ipaddr);
+
+
+
+
+
+
+typedef err_t (*netif_linkoutput_fn)(struct netif *netif, struct pbuf *p);
+
+typedef void (*netif_status_callback_fn)(struct netif *netif);
+
+typedef err_t (*netif_igmp_mac_filter_fn)(struct netif *netif,
+       ip_addr_t *group, u8_t action);
+
+
+
+
+struct netif {
+
+  struct netif *next;
+
+
+  ip_addr_t ip_addr;
+  ip_addr_t netmask;
+  ip_addr_t gw;
+
+
+
+  netif_input_fn input;
+
+
+
+  netif_output_fn output;
+
+
+
+  netif_linkoutput_fn linkoutput;
+# 172 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+  void *state;
+# 186 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+  u16_t mtu;
+
+  u8_t hwaddr_len;
+
+  u8_t hwaddr[6U];
+
+  u8_t flags;
+
+  char name[2];
+
+  u8_t num;
+# 230 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+};
+# 253 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+extern struct netif *netif_list;
+
+extern struct netif *netif_default;
+
+void netif_init(void);
+
+struct netif *netif_add(struct netif *netif, const ip_addr_t *ipaddr, const ip_addr_t *netmask,
+        const ip_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
+
+void
+netif_set_addr(struct netif *netif, const ip_addr_t *ipaddr, const ip_addr_t *netmask,
+        const ip_addr_t *gw);
+void netif_remove(struct netif * netif);
+
+
+
+
+
+struct netif *netif_find(char *name);
+
+void netif_set_default(struct netif *netif);
+
+void netif_set_ipaddr(struct netif *netif, const ip_addr_t *ipaddr);
+void netif_set_netmask(struct netif *netif, const ip_addr_t *netmask);
+void netif_set_gw(struct netif *netif, const ip_addr_t *gw);
+
+void netif_set_up(struct netif *netif);
+void netif_set_down(struct netif *netif);
+# 291 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
+void netif_set_link_up(struct netif *netif);
+void netif_set_link_down(struct netif *netif);
+# 26 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 # 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/stats.h" 1
 # 37 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/stats.h"
 # 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/mem.h" 1
@@ -8122,176 +8283,9 @@ struct stats_ {
 extern struct stats_ lwip_stats;
 
 void stats_init(void);
-# 22 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+# 27 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 # 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/udp.h" 1
-# 39 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/udp.h"
-# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/pbuf.h" 1
-# 40 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/udp.h" 2
-# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h" 1
-# 41 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h" 1
-# 36 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
-# 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/def.h" 1
-# 99 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/def.h"
-u16_t lwip_htons(u16_t x);
-u16_t lwip_ntohs(u16_t x);
-u32_t lwip_htonl(u32_t x);
-u32_t lwip_ntohl(u32_t x);
-# 37 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h" 2
-
-
-
-
-
-
-
-struct ip_addr {
-  u32_t addr;
-};
-
-
-
-
-
-
-
-struct ip_addr_packed {
-  u32_t addr;
-} __attribute__ ((__packed__));
-
-
-
-
-
-
-
-typedef struct ip_addr ip_addr_t;
-typedef struct ip_addr_packed ip_addr_p_t;
-# 74 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
-
-struct ip_addr2 {
-  u16_t addrw[2];
-} __attribute__ ((__packed__));
-
-
-
-
-
-
-struct netif;
-
-extern const ip_addr_t ip_addr_any;
-extern const ip_addr_t ip_addr_broadcast;
-# 203 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
-u8_t ip4_addr_isbroadcast(u32_t addr, const struct netif *netif);
-
-
-u8_t ip4_addr_netmask_valid(u32_t netmask);
-# 234 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip_addr.h"
-u32_t ipaddr_addr(const char *cp);
-int ipaddr_aton(const char *cp, ip_addr_t *addr);
-
-char *ipaddr_ntoa(const ip_addr_t *addr);
-char *ipaddr_ntoa_r(const ip_addr_t *addr, char *buf, int buflen);
-# 42 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h" 2
-# 102 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-typedef err_t (*netif_init_fn)(struct netif *netif);
-
-
-
-
-
-
-typedef err_t (*netif_input_fn)(struct pbuf *p, struct netif *inp);
-# 118 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-typedef err_t (*netif_output_fn)(struct netif *netif, struct pbuf *p,
-       const ip_addr_t *ipaddr);
-
-
-
-
-
-
-typedef err_t (*netif_linkoutput_fn)(struct netif *netif, struct pbuf *p);
-
-typedef void (*netif_status_callback_fn)(struct netif *netif);
-
-typedef err_t (*netif_igmp_mac_filter_fn)(struct netif *netif,
-       ip_addr_t *group, u8_t action);
-
-
-
-
-struct netif {
-
-  struct netif *next;
-
-
-  ip_addr_t ip_addr;
-  ip_addr_t netmask;
-  ip_addr_t gw;
-
-
-
-  netif_input_fn input;
-
-
-
-  netif_output_fn output;
-
-
-
-  netif_linkoutput_fn linkoutput;
-# 172 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-  void *state;
-# 186 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-  u16_t mtu;
-
-  u8_t hwaddr_len;
-
-  u8_t hwaddr[6U];
-
-  u8_t flags;
-
-  char name[2];
-
-  u8_t num;
-# 230 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-};
-# 253 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-extern struct netif *netif_list;
-
-extern struct netif *netif_default;
-
-void netif_init(void);
-
-struct netif *netif_add(struct netif *netif, const ip_addr_t *ipaddr, const ip_addr_t *netmask,
-        const ip_addr_t *gw, void *state, netif_init_fn init, netif_input_fn input);
-
-void
-netif_set_addr(struct netif *netif, const ip_addr_t *ipaddr, const ip_addr_t *netmask,
-        const ip_addr_t *gw);
-void netif_remove(struct netif * netif);
-
-
-
-
-
-struct netif *netif_find(char *name);
-
-void netif_set_default(struct netif *netif);
-
-void netif_set_ipaddr(struct netif *netif, const ip_addr_t *ipaddr);
-void netif_set_netmask(struct netif *netif, const ip_addr_t *netmask);
-void netif_set_gw(struct netif *netif, const ip_addr_t *gw);
-
-void netif_set_up(struct netif *netif);
-void netif_set_down(struct netif *netif);
-# 291 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/netif.h"
-void netif_set_link_up(struct netif *netif);
-void netif_set_link_down(struct netif *netif);
-# 41 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/udp.h" 2
-
+# 42 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/lwip/udp.h"
 # 1 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip.h" 1
 # 89 "./0_Src/2_CDrv/TriCore/ETHERNET/LWIP-1.4.1/src/include/ipv4/lwip/ip.h"
 struct ip_pcb {
@@ -8416,7 +8410,7 @@ err_t udp_send_chksum(struct udp_pcb *pcb, struct pbuf *p,
 void udp_input (struct pbuf *p, struct netif *inp);
 
 void udp_init (void);
-# 23 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+# 28 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 # 1 "./0_Src/0_AppSw/Tricore/Device_Driver/Device_Interface/Device_IF.h" 1
 # 11 "./0_Src/0_AppSw/Tricore/Device_Driver/Device_Interface/Device_IF.h"
 # 1 "./0_Src/0_AppSw/Tricore/System/System_Configuration.h" 1
@@ -16647,7 +16641,7 @@ extern void ISR_CAN_msgObj_7(void);
 
 
 void Device_IF_Setup(void);
-# 24 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+# 29 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 
 # 1 "./0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/include/Ifx_Lwip.h" 1
 # 20 "./0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/include/Ifx_Lwip.h"
@@ -21468,10 +21462,10 @@ static inline __attribute__ ((always_inline)) IfxEth *IfxEth_get(void)
 {
     return &g_IfxEth;
 }
-# 26 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+# 31 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 
 # 1 "./0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/src/include/ipv4/lwip/ip_addr.h" 1
-# 28 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+# 33 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
 # 1 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h" 1
 # 27 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
 # 1 "./0_Src/4_McHal/Tricore/Eth/Phy_Pef7071/IfxEth_Phy_Pef7071.h" 1
@@ -21645,8 +21639,151 @@ typedef struct _ethFrameStr_ARP{
     uint8 targetIP[4];
 
 } ethFrameStr_ARP;
-# 29 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
-# 52 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+
+typedef struct _ethFrameStr_SOMEIP{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 477 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+    uint8 payload[1500 - 20 - 8 - 16];
+
+} ethFrameStr_SOMEIP;
+
+typedef struct _ethFrameStr_SD{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 552 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+
+    uint8 : 6;
+    uint8 UnicastFlag : 1;
+    uint8 RebootFlag : 1;
+
+    uint8 SDReserved[3];
+    uint8 EntryArrayLength[4];
+
+    uint8 payload[1500 - 20 - 8 - 16 - 8];
+
+} ethFrameStr_SD;
+# 34 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h" 2
+
+
+extern struct udp_pcb *service_discovery_pcb;
+# 59 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
 typedef enum
 {
     REQUEST = 0x00,
@@ -21724,7 +21861,51 @@ typedef struct
         } Total_b;
     };
 } SOMEIP_Message;
-# 151 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+
+
+
+
+typedef struct
+{
+    union
+    {
+
+        uint8 Total[16];
+
+        struct
+        {
+
+            union
+            {
+
+                uint8 Header[16];
+
+                struct
+                {
+
+                    uint16 Service_ID;
+
+                    uint16 Method_ID;
+
+                    uint32 Length;
+
+                    uint16 Client_ID;
+
+                    uint16 Session_ID;
+
+                    uint8 Protocol_Version;
+
+                    uint8 Interface_Version;
+
+                    uint8 Message_Type;
+
+                    uint8 Return_Code;
+                } Header_b;
+            };
+        } Total_b;
+    };
+} SOMEIP_Header;
+# 202 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
 typedef enum
 {
     SD_TYPE_FIND = 0x00,
@@ -21747,11 +21928,15 @@ typedef struct
         uint32 Total;
         struct
         {
-            uint32 Reserved : 24;
             uint32 Flags : 8;
+            uint32 Reserved : 24;
         } Total_b;
     };
 } SOMEIP_SD_Flags;
+
+
+
+
 
 typedef struct _ServiceEntryStr{
 
@@ -21761,8 +21946,8 @@ typedef struct _ServiceEntryStr{
     uint8 Type;
     uint8 OptionIdx1st;
     uint8 OptionIdx2nd;
-    uint8 OptionNum1st : 4;
     uint8 OptionNum2nd : 4;
+    uint8 OptionNum1st : 4;
 
     uint16 ServiceID;
     uint16 InstanceID;
@@ -21779,8 +21964,8 @@ typedef struct _EventGroupEntryStr{
     uint8 Type;
     uint8 OptionIdx1st;
     uint8 OptionIdx2nd;
-    uint8 OptionNum1st : 4;
     uint8 OptionNum2nd : 4;
+    uint8 OptionNum1st : 4;
 
 
     uint16 ServiceID;
@@ -21791,6 +21976,15 @@ typedef struct _EventGroupEntryStr{
     uint16 EventGroupID;
 } SOMEIP_SD_EventGroupEntry;
 
+typedef struct _SDOptionDefaultStr{
+
+
+
+    uint16 Length;
+    uint8 Type;
+    uint8 _Reserved;
+} SOMEIP_SD_OptionDefault;
+
 typedef struct _IPv4EndpntOptionStr{
 
 
@@ -21798,12 +21992,34 @@ typedef struct _IPv4EndpntOptionStr{
     uint16 Length;
     uint8 Type;
     uint8 Reserved_1;
-    uint32 IPv4Addr;
+    uint8 IPv4Addr[4];
     uint8 Reserved_2;
     uint8 L4_Proto;
     uint16 Port_Number;
 } SOMEIP_SD_IPv4EndpntOption;
-# 238 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+
+typedef struct _SD_MessageStr{
+    SOMEIP_Header _SOMEIP_Header;
+    SOMEIP_SD_Flags _SD_Flags;
+    uint32 _EntryArrayLength;
+    union
+    {
+        SOMEIP_SD_ServiceEntry _SD_ServiceEntry;
+        SOMEIP_SD_EventGroupEntry _SD_EventGroupEntry;
+    };
+    uint32 _OptionArrayLength;
+    SOMEIP_SD_IPv4EndpntOption _IPv4EndpointOption;
+
+} SOMEIP_SD_Message;
+# 315 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.h"
+void Service_Discovery_Init(void);
+
+
+void SOMEIP_input(struct pbuf *p);
+void Rx_someip_handle(struct pbuf *p);
+void Rx_someip_sd_handle(struct pbuf *p);
+
+
 void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint16 Service_ID,
                     uint16 Method_ID,
@@ -21815,6 +22031,7 @@ void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint8 Message_Type,
                     uint8 Return_Code);
 void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length);
+
 
 void TxSOMEIP_Request();
 void TxSOMEIP_Response();
@@ -21828,17 +22045,156 @@ void SOMEIP_SD_EventGroupEntry_Set();
 void SOMEIP_SD_OptionLength_Set();
 void SOMEIP_SD_IPv4EndptOption_Set();
 
-void TxSOMEIP_SD_Offer();
-void TxSOMEIP_SD_Subscribe();
-void TxSOMEIP_SD_SubscribeACK();
 
+void TxSOMEIP_SD_Offer();
+void TxSOMEIP_SD_Subscribe(SOMEIP_SD_ServiceEntry *_ServiceEntry, SOMEIP_SD_IPv4EndpntOption *_IPv4EndpointOption);
+void TxSOMEIP_SD_ACK();
 void TxSOMEIP_SD_Event();
 
 
 void TxSOMEIP_Test();
 # 9 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c" 2
 
-void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
+struct udp_pcb *service_discovery_pcb;
+
+void Service_Discovery_Init(void)
+{
+ service_discovery_pcb = udp_new();
+
+    if(service_discovery_pcb)
+    {
+
+
+
+        err_t err;
+
+     err = udp_bind(service_discovery_pcb, ((ip_addr_t *)&ip_addr_any), 30490U);
+
+     if(err != 0)
+     {
+      printf_SysLog("UDP/IP pcb has removed !-,,! \r\n");
+         udp_remove(service_discovery_pcb);
+     }
+    }
+ else
+ {
+
+ }
+}
+# 45 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c"
+void
+SOMEIP_input(struct pbuf *p)
+{
+    ethFrameStr_SOMEIP RxFrameBuffer;
+    u16_t src_portNum,dst_portNum;
+
+    memcpy(&RxFrameBuffer, p->payload, p->len);
+
+    src_portNum = (RxFrameBuffer.srcPN[0] << 8) | (RxFrameBuffer.srcPN[1] & 0xFF);
+    dst_portNum = (RxFrameBuffer.dstPN[0] << 8) | (RxFrameBuffer.dstPN[1] & 0xFF);
+
+
+    switch(src_portNum)
+    {
+        case 30490:
+
+            Rx_someip_sd_handle(p);
+            pbuf_free(p);
+            break;
+        case 30509 ... 30520:
+
+
+            pbuf_free(p);
+            break;
+        default:
+
+            pbuf_free(p);
+            break;
+    }
+}
+
+
+
+
+
+
+void Rx_someip_handle(struct pbuf *p)
+{
+
+}
+
+
+
+
+
+
+
+void Rx_someip_sd_handle(struct pbuf *p)
+{
+    ethFrameStr_SD RxFrameBuffer;
+    u32_t EntryLength, OptionLength;
+    u8_t _sdtype, _optiontype;
+    SOMEIP_SD_ServiceEntry ServiceEntry;
+    SOMEIP_SD_EventGroupEntry EventGroupEntry;
+    SOMEIP_SD_OptionDefault SDOptionDefault;
+    SOMEIP_SD_IPv4EndpntOption IPv4Endpoint;
+    ip_addr_t srv_src_ip;
+    u16_t srv_src_port;
+    u8_t srv_proto;
+    int i,j;
+
+
+    memcpy(&RxFrameBuffer, p->payload, p->len);
+    EntryLength = (RxFrameBuffer.EntryArrayLength[0] << 24) | (RxFrameBuffer.EntryArrayLength[1] << 16) |
+                    (RxFrameBuffer.EntryArrayLength[2] << 8) | (RxFrameBuffer.EntryArrayLength[3] & 0xFF);
+    OptionLength =(RxFrameBuffer.payload[EntryLength] << 24) | (RxFrameBuffer.payload[EntryLength + 1] << 16) |
+                    (RxFrameBuffer.payload[EntryLength + 2] << 8) | (RxFrameBuffer.payload[EntryLength + 3] & 0xFF);
+
+    for(i = 0; i < EntryLength / 16; i++)
+    {
+        _sdtype = RxFrameBuffer.payload[0 + (EntryLength * i)];
+
+
+        switch(_sdtype)
+        {
+         case 0x00:
+          break;
+         case 0x01:
+                memcpy(&ServiceEntry,&RxFrameBuffer.payload,16);
+                ServiceEntry.ServiceID = lwip_ntohs(ServiceEntry.ServiceID);
+                ServiceEntry.InstanceID = lwip_ntohs(ServiceEntry.InstanceID);
+                ServiceEntry.MinorVer = lwip_ntohs(ServiceEntry.MinorVer);
+
+
+                for(j = 0; j < ServiceEntry.OptionNum1st; j++)
+                {
+                    memcpy(&SDOptionDefault,&RxFrameBuffer.payload[4+EntryLength+ServiceEntry.OptionIdx1st],4);
+                    _optiontype = SDOptionDefault.Type;
+
+
+                    if(_optiontype == 0x04)
+                    {
+                        memcpy(&IPv4Endpoint, &RxFrameBuffer.payload[4+EntryLength+ServiceEntry.OptionIdx1st],OptionLength);
+
+
+
+                        TxSOMEIP_SD_Subscribe(&ServiceEntry,&IPv4Endpoint);
+                    }
+                }
+          break;
+         case 0x06:
+                break;
+            case 0x07:
+                printf_SysLog("Received SubscribeACK.\r\n");
+                break;
+        }
+    }
+
+    return;
+}
+# 170 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c"
+void
+SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
                     uint16 Service_ID,
                     uint16 Method_ID,
                     uint32 Payload_Length,
@@ -21859,8 +22215,9 @@ void SOMEIP_Header_Set(SOMEIP_Message *TxMsg,
     TxMsg->Total_b.Header_b.Message_Type = Message_Type;
     TxMsg->Total_b.Header_b.Return_Code = Return_Code;
 }
-
-void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length)
+# 200 "0_Src/0_AppSw/Tricore/Ethernet/apps/SomeIP/someip.c"
+void
+SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Length)
 {
     int i = 0;
     for(i = 0; i < Length; i++)
@@ -21869,7 +22226,92 @@ void SOMEIP_Payload_Set(SOMEIP_Message *TxMsg, uint8 * Payload_Msg, uint32 Lengt
     }
 }
 
-void TxSOMEIP_Test()
+void
+TxSOMEIP_SD_Subscribe(SOMEIP_SD_ServiceEntry *_ServiceEntry, SOMEIP_SD_IPv4EndpntOption *_IPv4EndpointOption)
+{
+    err_t err;
+    static int _sessionID = 0;
+    SOMEIP_SD_Message TxMsg;
+    SOMEIP_Header _SomeipHeader;
+    SOMEIP_SD_EventGroupEntry _EventGroupEntry;
+    SOMEIP_SD_IPv4EndpntOption _client_ipOption;
+
+
+    _EventGroupEntry.Type = 0x06;
+    _EventGroupEntry.OptionIdx1st = 0;
+    _EventGroupEntry.OptionIdx2nd = 0;
+    _EventGroupEntry.OptionNum2nd = 0;
+    _EventGroupEntry.OptionNum1st = 1;
+    _EventGroupEntry.ServiceID = (uint16)swap_uint16(_ServiceEntry->ServiceID);
+    _EventGroupEntry.InstanceID = (uint16)swap_uint16(_ServiceEntry->InstanceID);
+    _EventGroupEntry.MajorVer = 0;
+    _EventGroupEntry.TTL[2] = 3;
+    _EventGroupEntry.Counter = 0;
+    _EventGroupEntry.EventGroupID = (uint16)swap_uint16(0x4465);
+
+
+    _client_ipOption.Length = (uint16)swap_uint16(0x0009);
+    _client_ipOption.Type = 0x04;
+    _client_ipOption.Reserved_1 = 0;
+    _client_ipOption.IPv4Addr[0] = 192;_client_ipOption.IPv4Addr[1] = 168;_client_ipOption.IPv4Addr[2] = 0;_client_ipOption.IPv4Addr[3]=111;
+    _client_ipOption.Reserved_2 = 0;
+    _client_ipOption.L4_Proto = 0x11;
+    _client_ipOption.Port_Number = (uint16)swap_uint16(30509);
+
+    SOMEIP_Header_Set(&_SomeipHeader,
+                    0xffff,
+                    0x8100,
+                    0x28,
+                    0x0000,
+                    _sessionID,
+                    0x01,
+                    0x01,
+                    NOTIFICATION,
+                    E_OK);
+    _sessionID++;
+    memcpy(&TxMsg._SOMEIP_Header,&_SomeipHeader, 16);
+    TxMsg._SD_Flags.Total = swap_uint32(0xc0000000);
+    TxMsg._EntryArrayLength = swap_uint32(16);
+    memcpy(&TxMsg._SD_EventGroupEntry,&_EventGroupEntry, 16);
+    TxMsg._OptionArrayLength = swap_uint32(12);
+    memcpy(&TxMsg._IPv4EndpointOption,&_client_ipOption, 12);
+
+    struct pbuf *txbuf = pbuf_alloc(PBUF_TRANSPORT, (uint32)sizeof(TxMsg), PBUF_RAM);
+    if(txbuf != ((void *)0))
+    {
+        udp_connect(service_discovery_pcb, ((ip_addr_t *)&ip_addr_broadcast), 30490U);
+
+        pbuf_take(txbuf, &TxMsg,(uint32)sizeof(TxMsg));
+        ip_addr_t destination_ip;
+        (&destination_ip)->addr = ((u32_t)((_IPv4EndpointOption->IPv4Addr[3]) & 0xff) << 24) | ((u32_t)((_IPv4EndpointOption->IPv4Addr[2]) & 0xff) << 16) | ((u32_t)((_IPv4EndpointOption->IPv4Addr[1]) & 0xff) << 8) | (u32_t)((_IPv4EndpointOption->IPv4Addr[0]) & 0xff);
+     err = udp_sendto(service_discovery_pcb, txbuf, &destination_ip,30490);
+
+     if (err == 0)
+        {
+            printf_SysLog("Send Subscribe Message !! \r\n");
+        }
+     else
+        {
+            printf_SysLog("udp_sendto fail -- TxSOMEIP_SD_Subscribe() !!\r\n");
+        }
+     udp_disconnect(service_discovery_pcb);
+
+     pbuf_free(txbuf);
+    }
+    else
+    {
+     printf_SysLog("Failed to allocate memory for UDP packet buffer.\r\n");
+    }
+}
+
+
+
+
+
+
+
+void
+TxSOMEIP_Test()
 {
     struct udp_pcb *upcb;
     SOMEIP_Message TxMsg;
@@ -21933,9 +22375,6 @@ void TxSOMEIP_Test()
      udp_disconnect(upcb);
 
      pbuf_free(txbuf);
-
-
-     udp_remove(upcb);
     }
     else
     {

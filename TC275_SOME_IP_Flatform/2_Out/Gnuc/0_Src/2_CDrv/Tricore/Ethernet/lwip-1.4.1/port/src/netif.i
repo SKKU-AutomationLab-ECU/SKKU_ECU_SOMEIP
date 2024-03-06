@@ -14145,6 +14145,146 @@ typedef struct _ethFrameStr_ARP{
     uint8 targetIP[4];
 
 } ethFrameStr_ARP;
+
+typedef struct _ethFrameStr_SOMEIP{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 477 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+    uint8 payload[1500 - 20 - 8 - 16];
+
+} ethFrameStr_SOMEIP;
+
+typedef struct _ethFrameStr_SD{
+
+
+
+
+
+    uint8 dstMAC[6];
+    uint8 srcMAC[6];
+# 552 "./0_Src/0_AppSw/Tricore/Device_Driver/Driver_Communication/Peripherals_ETH.h"
+    uint8 ethType[2];
+
+
+
+
+
+    uint8 IHL : 4;
+    uint8 IPV : 4;
+    uint8 ECN : 2;
+    uint8 DSCP : 6;
+
+    uint8 TotalLen[2];
+    uint8 GroupID[2];
+    uint8 fragInfo[2];
+    uint8 TTL;
+    uint8 Protocol;
+    uint8 ICS[2];
+
+    uint8 srcIP[4];
+    uint8 dstIP[4];
+
+
+
+
+
+    uint8 srcPN[2];
+    uint8 dstPN[2];
+
+    uint8 UDPLen[2];
+    uint8 UCS[2];
+
+
+
+
+
+    uint8 serviceID[2];
+    uint8 methodID[2];
+
+    uint8 length[4];
+
+    uint8 clientPref;
+    uint8 clientID;
+    uint8 sessionID[2];
+
+    uint8 someipVer;
+    uint8 ifaceVer;
+    uint8 msgType;
+    uint8 returncode;
+
+
+
+
+
+
+    uint8 : 6;
+    uint8 UnicastFlag : 1;
+    uint8 RebootFlag : 1;
+
+    uint8 SDReserved[3];
+    uint8 EntryArrayLength[4];
+
+    uint8 payload[1500 - 20 - 8 - 16 - 8];
+
+} ethFrameStr_SD;
 # 69 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c" 2
 # 1 "./0_Src/0_AppSw/Tricore/Application/Application.h" 1
 # 30 "./0_Src/0_AppSw/Tricore/Application/Application.h"
@@ -14364,7 +14504,6 @@ err_t ifx_netif_input(netif_t *netif)
     p = low_level_input(netif);
 
 
-
     if (p == ((void *)0))
     {
 
@@ -14372,7 +14511,6 @@ err_t ifx_netif_input(netif_t *netif)
     }
 
     ethhdr = p->payload;
-
 
     switch (lwip_htons(ethhdr->type))
     {
@@ -14384,10 +14522,10 @@ err_t ifx_netif_input(netif_t *netif)
 
 
 
-
+   SOMEIP_input(p);
 
   case 0x0806U:
-# 373 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"
+# 371 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"
    if (netif->input(p, netif) != 0)
    {
     do { if ( ((0x00U) & 0x80U) && ((0x00U) & 0x80U) && ((s16_t)((0x00U) & 0x03) >= 0x00)) { Ifx_Lwip_printf ("ifx_netif_input: IP input error\n"); if ((0x00U) & 0x08U) { while(1); } } } while(0);
@@ -14407,12 +14545,12 @@ err_t ifx_netif_input(netif_t *netif)
 
     return 0;
 }
-# 407 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"
+# 405 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"
 err_t ifx_netif_init(netif_t *netif)
 {
     IfxEth *ethernetif;
 
-    do { if(!((netif != ((void *)0)))) Ifx_Lwip_printf("Assertion \"%s\" failed at line %d in %s\n", "netif != NULL", 411, "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"); ; } while(0);
+    do { if(!((netif != ((void *)0)))) Ifx_Lwip_printf("Assertion \"%s\" failed at line %d in %s\n", "netif != NULL", 409, "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"); ; } while(0);
     do { if ( ((0x00U | 0x40U) & 0x80U) && ((0x00U | 0x40U) & 0x80U) && ((s16_t)((0x00U | 0x40U) & 0x03) >= 0x00)) { Ifx_Lwip_printf ("ifx_netif_init ( %#x)\n", netif); if ((0x00U | 0x40U) & 0x08U) { while(1); } } } while(0);
 
     ethernetif = IfxEth_get();
@@ -14422,7 +14560,7 @@ err_t ifx_netif_init(netif_t *netif)
         do { if ( ((0x00U) & 0x80U) && ((0x00U) & 0x80U) && ((s16_t)((0x00U) & 0x03) >= 0x00)) { Ifx_Lwip_printf ("ifx_netif_init: out of memory\n"); if ((0x00U) & 0x08U) { while(1); } } } while(0);
         return -1;
     }
-# 434 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"
+# 432 "0_Src/2_CDrv/Tricore/Ethernet/lwip-1.4.1/port/src/netif.c"
     netif->state = ethernetif;
     netif->name[0] = 'e';
     netif->name[1] = 'n';
